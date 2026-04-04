@@ -4,280 +4,205 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>SafeCheck — Inspecciones de Seguridad</title>
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet">
+<!-- jsPDF para generación de PDF en el navegador -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <style>
-  :root {
-    --bg: #0a0e1a;
-    --surface: #111827;
-    --surface2: #1a2235;
-    --border: #1e2d45;
-    --accent: #f97316;
-    --accent2: #fb923c;
-    --ok: #22c55e;
-    --warn: #eab308;
-    --danger: #ef4444;
-    --text: #e2e8f0;
-    --muted: #64748b;
-    --radius: 12px;
-  }
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  body {
-    font-family: 'DM Sans', sans-serif;
-    background: var(--bg);
-    color: var(--text);
-    min-height: 100vh;
-    overflow-x: hidden;
-  }
-  h1,h2,h3,h4 { font-family: 'Syne', sans-serif; }
+:root {
+  --bg:#0a0e1a; --surface:#111827; --surface2:#1a2235; --border:#1e2d45;
+  --accent:#f97316; --accent2:#fb923c; --ok:#22c55e; --warn:#eab308;
+  --danger:#ef4444; --text:#e2e8f0; --muted:#64748b; --r:12px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden}
+h1,h2,h3,h4{font-family:'Syne',sans-serif}
+body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(249,115,22,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(249,115,22,.04) 1px,transparent 1px);background-size:40px 40px;pointer-events:none;z-index:0}
 
-  /* ── GRID NOISE ── */
-  body::before {
-    content: '';
-    position: fixed; inset: 0;
-    background-image:
-      linear-gradient(rgba(249,115,22,.04) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(249,115,22,.04) 1px, transparent 1px);
-    background-size: 40px 40px;
-    pointer-events: none; z-index: 0;
-  }
+/* ── SCREENS ── */
+.screen{display:none;min-height:100vh;position:relative;z-index:1}
+.screen.active{display:flex;flex-direction:column}
 
-  /* ── SCREENS ── */
-  .screen { display: none; min-height: 100vh; position: relative; z-index: 1; }
-  .screen.active { display: flex; flex-direction: column; }
+/* ── LOGIN ── */
+#screen-login{align-items:center;justify-content:center;background:radial-gradient(ellipse 80% 60% at 50% 0%,rgba(249,115,22,.18) 0%,transparent 70%)}
+.login-card{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:48px 40px;width:100%;max-width:420px;box-shadow:0 40px 80px rgba(0,0,0,.5)}
+.logo{display:flex;align-items:center;gap:12px;margin-bottom:32px}
+.logo-icon{width:44px;height:44px;background:var(--accent);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:22px}
+.logo h1{font-size:24px;font-weight:800;letter-spacing:-.5px}
+.logo span{color:var(--accent)}
+.lcard-sub{color:var(--muted);font-size:14px;margin-bottom:28px}
+label{display:block;font-size:11px;font-weight:600;color:var(--muted);margin-bottom:6px;text-transform:uppercase;letter-spacing:.5px}
+input[type=text],input[type=password],input[type=date],textarea,select{width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:8px;color:var(--text);padding:12px 14px;font-family:'DM Sans',sans-serif;font-size:15px;outline:none;transition:border-color .2s}
+input:focus,textarea:focus,select:focus{border-color:var(--accent)}
+.field{margin-bottom:18px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:13px 24px;border-radius:9px;font-family:'Syne',sans-serif;font-weight:700;font-size:15px;cursor:pointer;border:none;transition:all .2s;white-space:nowrap}
+.btn-primary{background:var(--accent);color:#fff}
+.btn-primary:hover{background:var(--accent2);transform:translateY(-1px);box-shadow:0 8px 24px rgba(249,115,22,.35)}
+.btn-outline{background:transparent;border:1.5px solid var(--border);color:var(--text)}
+.btn-outline:hover{border-color:var(--accent);color:var(--accent)}
+.btn-ok{background:var(--ok);color:#fff}
+.btn-ok:hover{filter:brightness(1.1)}
+.btn-danger{background:var(--danger);color:#fff}
+.btn-pdf{background:#1e40af;color:#fff}
+.btn-pdf:hover{background:#1d4ed8}
+.btn-sm{padding:8px 16px;font-size:13px}
+.btn-w{width:100%}
+.login-demo{margin-top:20px;padding-top:20px;border-top:1px solid var(--border)}
+.demo-user{display:flex;justify-content:space-between;align-items:center;padding:10px 14px;background:var(--surface2);border-radius:8px;margin-bottom:8px;font-size:13px;cursor:pointer;border:1px solid transparent;transition:border-color .2s}
+.demo-user:hover{border-color:var(--accent)}
+.demo-badge{font-size:10px;padding:3px 8px;border-radius:4px;font-weight:700;text-transform:uppercase}
+.badge-admin{background:rgba(249,115,22,.2);color:var(--accent)}
+.badge-inspector{background:rgba(34,197,94,.2);color:var(--ok)}
+.err-msg{background:rgba(239,68,68,.15);border:1px solid rgba(239,68,68,.3);color:#fca5a5;border-radius:8px;padding:10px 14px;font-size:14px;margin-bottom:16px;display:none}
 
-  /* ══════════════════════════════
-     LOGIN
-  ══════════════════════════════ */
-  #screen-login {
-    align-items: center; justify-content: center;
-    background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(249,115,22,.18) 0%, transparent 70%);
-  }
-  .login-card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 20px;
-    padding: 48px 40px;
-    width: 100%; max-width: 420px;
-    box-shadow: 0 40px 80px rgba(0,0,0,.5);
-  }
-  .logo { display: flex; align-items: center; gap: 12px; margin-bottom: 32px; }
-  .logo-icon {
-    width: 44px; height: 44px;
-    background: var(--accent);
-    border-radius: 10px;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 22px;
-  }
-  .logo h1 { font-size: 24px; font-weight: 800; letter-spacing: -0.5px; }
-  .logo span { color: var(--accent); }
-  .login-card h2 { font-size: 18px; margin-bottom: 8px; }
-  .login-card p { color: var(--muted); font-size: 14px; margin-bottom: 28px; }
-  label { display: block; font-size: 12px; font-weight: 500; color: var(--muted); margin-bottom: 6px; text-transform: uppercase; letter-spacing: .5px; }
-  input[type=text], input[type=password], input[type=date], textarea, select {
-    width: 100%;
-    background: var(--surface2);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    color: var(--text);
-    padding: 12px 14px;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 15px;
-    outline: none;
-    transition: border-color .2s;
-  }
-  input:focus, textarea:focus, select:focus { border-color: var(--accent); }
-  .field { margin-bottom: 18px; }
-  .btn {
-    display: inline-flex; align-items: center; justify-content: center; gap: 8px;
-    padding: 13px 24px;
-    border-radius: 9px;
-    font-family: 'Syne', sans-serif;
-    font-weight: 700; font-size: 15px;
-    cursor: pointer; border: none; transition: all .2s;
-    text-decoration: none;
-  }
-  .btn-primary { background: var(--accent); color: #fff; width: 100%; }
-  .btn-primary:hover { background: var(--accent2); transform: translateY(-1px); box-shadow: 0 8px 24px rgba(249,115,22,.35); }
-  .btn-outline { background: transparent; border: 1.5px solid var(--border); color: var(--text); }
-  .btn-outline:hover { border-color: var(--accent); color: var(--accent); }
-  .btn-danger { background: var(--danger); color: #fff; }
-  .btn-ok { background: var(--ok); color: #fff; }
-  .btn-sm { padding: 8px 16px; font-size: 13px; }
-  .login-demo { margin-top: 20px; padding-top: 20px; border-top: 1px solid var(--border); }
-  .demo-user { display: flex; justify-content: space-between; align-items: center; padding: 10px 14px; background: var(--surface2); border-radius: 8px; margin-bottom: 8px; font-size: 13px; cursor: pointer; border: 1px solid transparent; transition: border-color .2s; }
-  .demo-user:hover { border-color: var(--accent); }
-  .demo-badge { font-size: 10px; padding: 3px 8px; border-radius: 4px; font-weight: 600; text-transform: uppercase; }
-  .badge-admin { background: rgba(249,115,22,.2); color: var(--accent); }
-  .badge-inspector { background: rgba(34,197,94,.2); color: var(--ok); }
-  .error-msg { background: rgba(239,68,68,.15); border: 1px solid rgba(239,68,68,.3); color: #fca5a5; border-radius: 8px; padding: 10px 14px; font-size: 14px; margin-bottom: 16px; display: none; }
+/* ── TOPBAR ── */
+#screen-app{background:var(--bg)}
+.topbar{background:var(--surface);border-bottom:1px solid var(--border);padding:0 24px;height:60px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
+.topbar-logo{display:flex;align-items:center;gap:10px}
+.topbar-logo .logo-icon{width:32px;height:32px;font-size:16px;border-radius:7px}
+.topbar-logo span{font-family:'Syne',sans-serif;font-weight:800;font-size:16px}
+.topbar-logo em{color:var(--accent);font-style:normal}
+.user-pill{display:flex;align-items:center;gap:10px}
+.avatar{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;flex-shrink:0}
+.avatar-admin{background:rgba(249,115,22,.3);color:var(--accent);border:1.5px solid var(--accent)}
+.avatar-inspector{background:rgba(34,197,94,.3);color:var(--ok);border:1.5px solid var(--ok)}
+.user-name{font-size:14px;font-weight:500}
+.user-role{font-size:11px;color:var(--muted)}
 
-  /* ══════════════════════════════
-     APP SHELL
-  ══════════════════════════════ */
-  #screen-app { background: var(--bg); }
-  .topbar {
-    background: var(--surface);
-    border-bottom: 1px solid var(--border);
-    padding: 0 24px;
-    height: 60px;
-    display: flex; align-items: center; justify-content: space-between;
-    position: sticky; top: 0; z-index: 100;
-  }
-  .topbar-logo { display: flex; align-items: center; gap: 10px; }
-  .topbar-logo .logo-icon { width: 32px; height: 32px; font-size: 16px; border-radius: 7px; }
-  .topbar-logo span { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 16px; }
-  .topbar-logo em { color: var(--accent); font-style: normal; }
-  .user-pill { display: flex; align-items: center; gap: 10px; }
-  .avatar { width: 34px; height: 34px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 13px; }
-  .avatar-admin { background: rgba(249,115,22,.3); color: var(--accent); border: 1.5px solid var(--accent); }
-  .avatar-inspector { background: rgba(34,197,94,.3); color: var(--ok); border: 1.5px solid var(--ok); }
-  .user-name { font-size: 14px; font-weight: 500; }
-  .user-role { font-size: 11px; color: var(--muted); }
+/* ── NAV TABS ── */
+.tab-nav{display:flex;gap:4px;padding:0 24px;background:var(--surface);border-bottom:1px solid var(--border)}
+.tab-btn{padding:12px 18px;font-family:'Syne',sans-serif;font-weight:600;font-size:13px;background:none;border:none;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;transition:all .2s}
+.tab-btn.active{color:var(--accent);border-bottom-color:var(--accent)}
+.tab-btn:hover:not(.active){color:var(--text)}
 
-  .app-content { padding: 32px 24px; max-width: 900px; margin: 0 auto; width: 100%; }
+.app-content{padding:32px 24px;max-width:960px;margin:0 auto;width:100%}
+.page-title{font-size:28px;font-weight:800;margin-bottom:4px}
+.page-sub{color:var(--muted);font-size:14px;margin-bottom:32px}
 
-  /* ══════════════════════════════
-     DASHBOARD
-  ══════════════════════════════ */
-  .page-title { font-size: 28px; font-weight: 800; margin-bottom: 4px; }
-  .page-sub { color: var(--muted); font-size: 14px; margin-bottom: 32px; }
+/* ── ALERT ── */
+.inspection-alert{background:linear-gradient(135deg,rgba(249,115,22,.15),rgba(249,115,22,.05));border:1.5px solid var(--accent);border-radius:16px;padding:24px 28px;margin-bottom:24px;display:flex;align-items:center;justify-content:space-between;gap:16px;animation:pulse-border 2.5s ease-in-out infinite}
+@keyframes pulse-border{0%,100%{box-shadow:0 0 0 0 rgba(249,115,22,0)}50%{box-shadow:0 0 0 6px rgba(249,115,22,.12)}}
+.alert-icon{font-size:36px;flex-shrink:0}
+.alert-text h3{font-size:18px;margin-bottom:4px}
+.alert-text p{color:var(--muted);font-size:13px}
+.alert-text strong{color:var(--accent)}
 
-  /* Alert banner */
-  .inspection-alert {
-    background: linear-gradient(135deg, rgba(249,115,22,.15), rgba(249,115,22,.05));
-    border: 1.5px solid var(--accent);
-    border-radius: 16px;
-    padding: 24px 28px;
-    margin-bottom: 24px;
-    display: flex; align-items: center; justify-content: space-between; gap: 16px;
-    animation: pulse-border 2.5s ease-in-out infinite;
-  }
-  @keyframes pulse-border {
-    0%,100% { box-shadow: 0 0 0 0 rgba(249,115,22,0); }
-    50% { box-shadow: 0 0 0 6px rgba(249,115,22,.12); }
-  }
-  .alert-icon { font-size: 36px; flex-shrink: 0; }
-  .alert-text h3 { font-size: 18px; margin-bottom: 4px; }
-  .alert-text p { color: var(--muted); font-size: 13px; }
-  .alert-text strong { color: var(--accent); }
+.stats-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:16px;margin-bottom:28px}
+.stat-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:20px}
+.stat-num{font-family:'Syne',sans-serif;font-size:32px;font-weight:800}
+.stat-label{color:var(--muted);font-size:12px;margin-top:4px}
+.c-ok{color:var(--ok)} .c-warn{color:var(--warn)} .c-danger{color:var(--danger)} .c-accent{color:var(--accent)}
 
-  /* Stats */
-  .stats-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px,1fr)); gap: 16px; margin-bottom: 32px; }
-  .stat-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; }
-  .stat-num { font-family: 'Syne', sans-serif; font-size: 32px; font-weight: 800; }
-  .stat-label { color: var(--muted); font-size: 12px; margin-top: 4px; }
-  .stat-ok .stat-num { color: var(--ok); }
-  .stat-warn .stat-num { color: var(--warn); }
-  .stat-accent .stat-num { color: var(--accent); }
+.section-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:24px;margin-bottom:20px}
+.section-card h3{font-size:16px;margin-bottom:16px;display:flex;align-items:center;gap:8px}
 
-  /* Admin panel */
-  .section-card { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 24px; margin-bottom: 20px; }
-  .section-card h3 { font-size: 16px; margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
-  .tag { display: inline-flex; align-items: center; gap: 4px; font-size: 11px; padding: 4px 10px; border-radius: 20px; font-weight: 600; }
-  .tag-pending { background: rgba(234,179,8,.15); color: var(--warn); }
-  .tag-done { background: rgba(34,197,94,.15); color: var(--ok); }
-  .tag-danger { background: rgba(239,68,68,.15); color: var(--danger); }
+/* ── HISTORY / REPORTS ── */
+.report-row{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;background:var(--surface2);border-radius:10px;margin-bottom:8px;gap:12px;flex-wrap:wrap}
+.report-info{flex:1;min-width:0}
+.report-title{font-weight:600;font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.report-meta{font-size:12px;color:var(--muted);margin-top:2px}
+.report-actions{display:flex;align-items:center;gap:8px;flex-shrink:0}
+.tag{display:inline-flex;align-items:center;gap:4px;font-size:11px;padding:4px 10px;border-radius:20px;font-weight:700}
+.tag-ok{background:rgba(34,197,94,.15);color:var(--ok)}
+.tag-danger{background:rgba(239,68,68,.15);color:var(--danger)}
+.tag-pending{background:rgba(234,179,8,.15);color:var(--warn)}
 
-  /* ══════════════════════════════
-     INSPECTION
-  ══════════════════════════════ */
-  .insp-header { display: flex; align-items: center; gap: 16px; margin-bottom: 32px; }
-  .insp-header h2 { font-size: 22px; font-weight: 800; }
-  .progress-bar-wrap { background: var(--surface2); border-radius: 99px; height: 6px; flex: 1; }
-  .progress-bar { height: 100%; border-radius: 99px; background: var(--accent); transition: width .4s ease; }
-  .progress-label { font-size: 12px; color: var(--muted); flex-shrink: 0; }
+/* ── INSPECTION ── */
+.insp-header{display:flex;align-items:center;gap:16px;margin-bottom:28px;flex-wrap:wrap}
+.insp-header h2{font-size:22px;font-weight:800}
+.progress-wrap{background:var(--surface2);border-radius:99px;height:6px;flex:1;min-width:80px}
+.progress-bar{height:100%;border-radius:99px;background:var(--accent);transition:width .4s}
+.progress-label{font-size:12px;color:var(--muted);flex-shrink:0}
+.chapters{display:flex;flex-direction:column;gap:12px}
+.chapter{background:var(--surface);border:1px solid var(--border);border-radius:14px;overflow:hidden}
+.chapter-header{display:flex;align-items:center;gap:16px;padding:18px 20px;cursor:pointer;user-select:none}
+.ch-num{width:36px;height:36px;border-radius:8px;background:var(--surface2);display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-weight:700;font-size:14px;flex-shrink:0;transition:all .3s}
+.ch-num.done{background:rgba(34,197,94,.2);color:var(--ok)}
+.ch-title{font-family:'Syne',sans-serif;font-weight:700;font-size:15px;flex:1}
+.ch-chevron{color:var(--muted);transition:transform .3s}
+.chapter.open .ch-chevron{transform:rotate(180deg)}
+.chapter-body{display:none;padding:0 20px 20px}
+.chapter.open .chapter-body{display:block}
+.subcap{background:var(--surface2);border-radius:10px;padding:18px;margin-bottom:12px}
+.subcap-title{font-weight:600;font-size:14px;margin-bottom:14px;display:flex;align-items:center;gap:8px}
+.subcap-num{color:var(--accent);font-family:'Syne',sans-serif}
 
-  .chapters { display: flex; flex-direction: column; gap: 12px; }
-  .chapter { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; overflow: hidden; }
-  .chapter-header { display: flex; align-items: center; gap: 16px; padding: 18px 20px; cursor: pointer; user-select: none; }
-  .ch-num { width: 36px; height: 36px; border-radius: 8px; background: var(--surface2); display: flex; align-items: center; justify-content: center; font-family: 'Syne', sans-serif; font-weight: 700; font-size: 14px; flex-shrink: 0; }
-  .ch-num.done { background: rgba(34,197,94,.2); color: var(--ok); }
-  .ch-num.active { background: rgba(249,115,22,.2); color: var(--accent); }
-  .ch-title { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 15px; flex: 1; }
-  .ch-chevron { color: var(--muted); transition: transform .3s; }
-  .chapter.open .ch-chevron { transform: rotate(180deg); }
-  .chapter-body { display: none; padding: 0 20px 20px; }
-  .chapter.open .chapter-body { display: block; }
+/* upload */
+.upload-zone{border:2px dashed var(--border);border-radius:10px;padding:28px;text-align:center;cursor:pointer;transition:all .2s;position:relative}
+.upload-zone:hover{border-color:var(--accent);background:rgba(249,115,22,.04)}
+.upload-zone input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
+.upload-icon{font-size:32px;margin-bottom:8px}
+.upload-zone p{color:var(--muted);font-size:13px}
+.upload-zone strong{color:var(--accent)}
+.photos-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:14px}
+.photo-thumb{position:relative;border-radius:8px;overflow:hidden;aspect-ratio:4/3;background:var(--surface)}
+.photo-thumb img{width:100%;height:100%;object-fit:cover}
+.del-btn{position:absolute;top:6px;right:6px;background:rgba(0,0,0,.75);border:none;border-radius:50%;width:24px;height:24px;color:#fff;cursor:pointer;font-size:12px;display:flex;align-items:center;justify-content:center}
 
-  .subcapitulo { background: var(--surface2); border-radius: 10px; padding: 18px; margin-bottom: 12px; }
-  .subcap-title { font-weight: 600; font-size: 14px; margin-bottom: 14px; display: flex; align-items: center; gap: 8px; }
-  .subcap-num { color: var(--accent); font-family: 'Syne', sans-serif; }
+/* AI result */
+.ai-result{background:rgba(249,115,22,.08);border:1px solid rgba(249,115,22,.25);border-radius:10px;padding:14px 16px;margin-top:12px;font-size:13px;line-height:1.6}
+.ai-label{font-size:11px;text-transform:uppercase;letter-spacing:.5px;color:var(--accent);font-weight:700;margin-bottom:8px;display:flex;align-items:center;gap:6px}
+.ai-spinner{display:inline-block;width:10px;height:10px;border:2px solid var(--accent);border-top-color:transparent;border-radius:50%;animation:spin .6s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.ai-field{display:flex;flex-direction:column;gap:2px;margin-bottom:6px}
+.ai-fl{font-size:10px;text-transform:uppercase;color:var(--muted);letter-spacing:.4px}
+.ai-fv{color:var(--text);font-weight:500}
 
-  /* Photo upload */
-  .upload-zone {
-    border: 2px dashed var(--border);
-    border-radius: 10px;
-    padding: 28px;
-    text-align: center;
-    cursor: pointer;
-    transition: all .2s;
-    position: relative;
-  }
-  .upload-zone:hover { border-color: var(--accent); background: rgba(249,115,22,.04); }
-  .upload-zone input[type=file] { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; }
-  .upload-icon { font-size: 32px; margin-bottom: 8px; }
-  .upload-zone p { color: var(--muted); font-size: 13px; }
-  .upload-zone strong { color: var(--accent); }
-  .photos-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 14px; }
-  .photo-thumb { position: relative; border-radius: 8px; overflow: hidden; aspect-ratio: 4/3; background: var(--surface); }
-  .photo-thumb img { width: 100%; height: 100%; object-fit: cover; }
-  .photo-thumb .del-btn { position: absolute; top: 6px; right: 6px; background: rgba(0,0,0,.7); border: none; border-radius: 50%; width: 24px; height: 24px; color: #fff; cursor: pointer; font-size: 12px; display: flex; align-items: center; justify-content: center; }
-  .ai-result { background: rgba(249,115,22,.08); border: 1px solid rgba(249,115,22,.25); border-radius: 10px; padding: 14px 16px; margin-top: 12px; font-size: 13px; }
-  .ai-result .ai-label { font-size: 11px; text-transform: uppercase; letter-spacing: .5px; color: var(--accent); font-weight: 600; margin-bottom: 6px; display: flex; align-items: center; gap: 6px; }
-  .ai-spinner { display: inline-block; width: 10px; height: 10px; border: 2px solid var(--accent); border-top-color: transparent; border-radius: 50%; animation: spin .6s linear infinite; }
-  @keyframes spin { to { transform: rotate(360deg); } }
+/* confirm */
+.confirm-block{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:10px;padding:16px;margin-top:12px}
+.confirm-block h4{font-size:13px;margin-bottom:12px;color:var(--muted)}
+.confirm-row{display:flex;gap:10px;margin-top:14px;flex-wrap:wrap}
+.done-badge{display:none;color:var(--ok);font-size:13px;margin-top:8px;font-weight:500}
 
-  /* Checklist */
-  .checklist { display: flex; flex-direction: column; gap: 8px; }
-  .check-item { display: flex; align-items: center; gap: 12px; padding: 10px 14px; background: var(--surface); border-radius: 8px; border: 1px solid var(--border); cursor: pointer; transition: border-color .2s; }
-  .check-item:hover { border-color: var(--ok); }
-  .check-item.checked { border-color: var(--ok); background: rgba(34,197,94,.06); }
-  .check-box { width: 20px; height: 20px; border-radius: 5px; border: 2px solid var(--border); flex-shrink: 0; display: flex; align-items: center; justify-content: center; transition: all .2s; }
-  .check-item.checked .check-box { background: var(--ok); border-color: var(--ok); }
-  .check-item.checked .check-box::after { content: '✓'; font-size: 12px; color: #fff; font-weight: 700; }
-  .check-label { font-size: 14px; }
+/* checklist */
+.checklist{display:flex;flex-direction:column;gap:8px}
+.check-item{display:flex;align-items:center;gap:12px;padding:10px 14px;background:var(--surface);border-radius:8px;border:1px solid var(--border);cursor:pointer;transition:border-color .2s}
+.check-item:hover{border-color:var(--ok)}
+.check-item.checked{border-color:var(--ok);background:rgba(34,197,94,.06)}
+.check-box{width:20px;height:20px;border-radius:5px;border:2px solid var(--border);flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all .2s}
+.check-item.checked .check-box{background:var(--ok);border-color:var(--ok)}
+.check-item.checked .check-box::after{content:'✓';font-size:12px;color:#fff;font-weight:700}
 
-  /* Date alert */
-  .date-alert { background: rgba(239,68,68,.12); border: 1.5px solid var(--danger); border-radius: 10px; padding: 16px; margin-top: 12px; }
-  .date-alert h4 { color: var(--danger); font-size: 15px; margin-bottom: 6px; display: flex; align-items: center; gap: 8px; }
-  .date-alert p { font-size: 13px; color: #fca5a5; }
-  .date-ok { background: rgba(34,197,94,.1); border: 1.5px solid var(--ok); border-radius: 10px; padding: 16px; margin-top: 12px; }
-  .date-ok h4 { color: var(--ok); font-size: 15px; display: flex; align-items: center; gap: 8px; }
+/* expiry */
+.date-alert{background:rgba(239,68,68,.12);border:1.5px solid var(--danger);border-radius:10px;padding:16px;margin-top:12px}
+.date-alert h4{color:var(--danger);font-size:15px;margin-bottom:6px;display:flex;align-items:center;gap:8px}
+.date-alert p{font-size:13px;color:#fca5a5;line-height:1.5}
+.date-ok{background:rgba(34,197,94,.1);border:1.5px solid var(--ok);border-radius:10px;padding:16px;margin-top:12px}
+.date-ok h4{color:var(--ok);font-size:15px;display:flex;align-items:center;gap:8px}
 
-  .confirm-row { display: flex; gap: 10px; margin-top: 14px; flex-wrap: wrap; }
-  .nav-row { display: flex; justify-content: space-between; align-items: center; margin-top: 28px; }
+.nav-row{display:flex;justify-content:space-between;align-items:center;margin-top:28px}
 
-  /* Modal */
-  .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.7); z-index: 200; align-items: center; justify-content: center; }
-  .modal-overlay.open { display: flex; }
-  .modal { background: var(--surface); border: 1px solid var(--border); border-radius: 20px; padding: 32px; max-width: 460px; width: 90%; }
-  .modal h3 { font-size: 20px; margin-bottom: 12px; }
-  .modal p { color: var(--muted); font-size: 14px; margin-bottom: 24px; }
-  .modal-btns { display: flex; gap: 12px; justify-content: flex-end; }
+/* modal */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:300;align-items:center;justify-content:center}
+.modal-overlay.open{display:flex}
+.modal{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:32px;max-width:500px;width:90%;max-height:80vh;overflow-y:auto}
+.modal h3{font-size:20px;margin-bottom:12px}
+.modal p{color:var(--muted);font-size:14px;margin-bottom:20px;line-height:1.6}
+.modal-btns{display:flex;gap:12px;justify-content:flex-end;flex-wrap:wrap}
 
-  /* Toast */
-  .toast { position: fixed; bottom: 24px; right: 24px; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 14px 20px; font-size: 14px; display: none; z-index: 999; align-items: center; gap: 10px; box-shadow: 0 16px 40px rgba(0,0,0,.4); animation: slide-in .3s ease; }
-  .toast.show { display: flex; }
-  @keyframes slide-in { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+/* toast */
+.toast{position:fixed;bottom:24px;right:24px;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:14px 20px;font-size:14px;display:none;z-index:999;align-items:center;gap:10px;box-shadow:0 16px 40px rgba(0,0,0,.4)}
+.toast.show{display:flex;animation:slide-in .3s ease}
+@keyframes slide-in{from{transform:translateY(20px);opacity:0}to{transform:translateY(0);opacity:1}}
 
-  /* Responsive */
-  @media (max-width: 600px) {
-    .app-content { padding: 16px; }
-    .photos-grid { grid-template-columns: repeat(2,1fr); }
-    .inspection-alert { flex-direction: column; }
-  }
+/* report detail modal */
+.report-detail-section{margin-bottom:16px;padding:14px;background:var(--surface2);border-radius:8px}
+.report-detail-section h4{font-size:13px;color:var(--accent);margin-bottom:8px}
+.report-detail-section p{font-size:13px;line-height:1.6;color:var(--text)}
+.report-detail-section ul{font-size:13px;padding-left:16px;line-height:2}
+.report-detail-img{width:100%;max-height:180px;object-fit:cover;border-radius:6px;margin-top:8px}
 
-  .text-muted { color: var(--muted); }
-  .mt-8 { margin-top: 8px; }
-  .mt-12 { margin-top: 12px; }
-  .mt-16 { margin-top: 16px; }
-  hr { border: none; border-top: 1px solid var(--border); margin: 16px 0; }
-  .w-full { width: 100%; }
+@media(max-width:600px){
+  .app-content{padding:16px}
+  .photos-grid{grid-template-columns:repeat(2,1fr)}
+  .inspection-alert{flex-direction:column}
+  .login-card{padding:32px 24px}
+  .report-row{flex-direction:column;align-items:flex-start}
+}
 </style>
 </head>
 <body>
 
-<!-- ══════════ LOGIN ══════════ -->
+<!-- ════════════ LOGIN ════════════ -->
 <div id="screen-login" class="screen active">
   <div class="login-card">
     <div class="logo">
@@ -285,32 +210,24 @@
       <h1>Safe<span>Check</span></h1>
     </div>
     <h2>Iniciar sesión</h2>
-    <p>Sistema de inspecciones de seguridad laboral</p>
-    <div id="login-error" class="error-msg">Usuario o contraseña incorrectos</div>
-    <div class="field">
-      <label>Usuario</label>
-      <input type="text" id="inp-user" placeholder="admin / inspector1" />
-    </div>
-    <div class="field">
-      <label>Contraseña</label>
-      <input type="password" id="inp-pass" placeholder="••••••••" />
-    </div>
-    <button class="btn btn-primary" onclick="doLogin()">Entrar →</button>
+    <p class="lcard-sub">Sistema de inspecciones de seguridad laboral</p>
+    <div id="login-error" class="err-msg">Usuario o contraseña incorrectos</div>
+    <div class="field"><label>Usuario</label><input type="text" id="inp-user" placeholder="admin / inspector1" /></div>
+    <div class="field"><label>Contraseña</label><input type="password" id="inp-pass" placeholder="••••••••" /></div>
+    <button class="btn btn-primary btn-w" onclick="doLogin()">Entrar →</button>
     <div class="login-demo">
-      <p style="font-size:12px;color:var(--muted);margin-bottom:10px;">Acceso rápido de demostración:</p>
+      <p style="font-size:12px;color:var(--muted);margin-bottom:10px">Acceso rápido demo:</p>
       <div class="demo-user" onclick="quickLogin('admin','admin123')">
-        <span>👤 admin / admin123</span>
-        <span class="demo-badge badge-admin">Administrador</span>
+        <span>👤 admin / admin123</span><span class="demo-badge badge-admin">Administrador</span>
       </div>
       <div class="demo-user" onclick="quickLogin('inspector1','insp2024')">
-        <span>👷 inspector1 / insp2024</span>
-        <span class="demo-badge badge-inspector">Inspector</span>
+        <span>👷 inspector1 / insp2024</span><span class="demo-badge badge-inspector">Inspector</span>
       </div>
     </div>
   </div>
 </div>
 
-<!-- ══════════ APP ══════════ -->
+<!-- ════════════ APP ════════════ -->
 <div id="screen-app" class="screen">
   <nav class="topbar">
     <div class="topbar-logo">
@@ -318,83 +235,77 @@
       <span>Safe<em>Check</em></span>
     </div>
     <div class="user-pill">
-      <div>
-        <div class="user-name" id="nav-name">-</div>
-        <div class="user-role" id="nav-role">-</div>
-      </div>
-      <div class="avatar" id="nav-avatar">-</div>
+      <div><div class="user-name" id="nav-name"></div><div class="user-role" id="nav-role"></div></div>
+      <div class="avatar" id="nav-avatar"></div>
       <button class="btn btn-outline btn-sm" onclick="doLogout()">Salir</button>
     </div>
   </nav>
 
-  <div class="app-content">
-    <!-- DASHBOARD -->
-    <div id="view-dashboard">
-      <h1 class="page-title" id="dash-title">Panel principal</h1>
-      <p class="page-sub" id="dash-sub">Bienvenido al sistema de inspecciones</p>
+  <!-- Tab nav (solo admin) -->
+  <div class="tab-nav" id="tab-nav" style="display:none">
+    <button class="tab-btn active" id="tab-dashboard" onclick="switchTab('dashboard')">📊 Panel</button>
+    <button class="tab-btn" id="tab-reports" onclick="switchTab('reports')">📋 Informes</button>
+  </div>
 
-      <!-- Alert inspección pendiente -->
-      <div id="inspection-pending-alert" class="inspection-alert" style="display:none;">
+  <div class="app-content">
+
+    <!-- ── DASHBOARD ── -->
+    <div id="view-dashboard">
+      <h1 class="page-title" id="dash-title">Panel</h1>
+      <p class="page-sub" id="dash-sub"></p>
+
+      <div id="inspection-pending-alert" class="inspection-alert" style="display:none">
         <div class="alert-icon">⚠️</div>
         <div class="alert-text">
-          <h3>Inspección pendiente de realizar</h3>
-          <p>Instalación: <strong id="alert-location">-</strong> · Solicitada por: <strong id="alert-by">Administrador</strong></p>
+          <h3>Inspección pendiente</h3>
+          <p>Instalación: <strong id="alert-location">-</strong> · Solicitada por: <strong id="alert-by">-</strong></p>
         </div>
-        <button class="btn btn-primary" style="width:auto;flex-shrink:0;" onclick="startInspection()">▶ Iniciar inspección</button>
+        <button class="btn btn-primary" style="width:auto;flex-shrink:0" onclick="startInspection()">▶ Iniciar</button>
       </div>
 
       <div class="stats-row">
-        <div class="stat-card stat-ok">
-          <div class="stat-num" id="stat-done">0</div>
-          <div class="stat-label">Inspecciones completadas</div>
-        </div>
-        <div class="stat-card stat-warn">
-          <div class="stat-num" id="stat-pending">0</div>
-          <div class="stat-label">Pendientes</div>
-        </div>
-        <div class="stat-card stat-accent">
-          <div class="stat-num" id="stat-alerts">0</div>
-          <div class="stat-label">Alertas activas</div>
-        </div>
+        <div class="stat-card"><div class="stat-num c-ok" id="stat-done">0</div><div class="stat-label">Completadas</div></div>
+        <div class="stat-card"><div class="stat-num c-warn" id="stat-pending">0</div><div class="stat-label">Pendientes</div></div>
+        <div class="stat-card"><div class="stat-num c-danger" id="stat-alerts">0</div><div class="stat-label">Alertas caducidad</div></div>
       </div>
 
-      <!-- Admin: solicitar inspección -->
-      <div id="admin-panel" class="section-card" style="display:none;">
-        <h3>⚙️ Panel Administrador</h3>
-        <div class="field">
-          <label>Nombre de la instalación</label>
-          <input type="text" id="inp-location" placeholder="Ej: Nave Industrial A3 – Polígono Norte" />
-        </div>
-        <div class="field">
-          <label>Asignar inspector</label>
+      <div id="admin-panel" class="section-card" style="display:none">
+        <h3>⚙️ Solicitar inspección</h3>
+        <div class="field"><label>Nombre instalación</label><input type="text" id="inp-location" placeholder="Ej: Nave Industrial A3 – Polígono Norte" /></div>
+        <div class="field"><label>Asignar inspector</label>
           <select id="inp-inspector">
-            <option value="inspector1">inspector1 — Carlos Rodríguez</option>
+            <option value="inspector1">Carlos Rodríguez (inspector1)</option>
           </select>
         </div>
-        <button class="btn btn-primary" style="width:auto;" onclick="requestInspection()">📋 Solicitar nueva inspección</button>
+        <button class="btn btn-primary" style="width:auto" onclick="requestInspection()">📋 Solicitar inspección</button>
       </div>
 
-      <!-- Historial -->
       <div class="section-card">
-        <h3>📁 Historial de inspecciones</h3>
-        <div id="history-list">
-          <p style="color:var(--muted);font-size:14px;">No hay inspecciones registradas aún.</p>
-        </div>
+        <h3>📁 Últimas inspecciones</h3>
+        <div id="history-list"><p style="color:var(--muted);font-size:14px">No hay inspecciones registradas.</p></div>
       </div>
     </div>
 
-    <!-- INSPECTION -->
-    <div id="view-inspection" style="display:none;">
+    <!-- ── REPORTS (admin) ── -->
+    <div id="view-reports" style="display:none">
+      <h1 class="page-title">📋 Informes de inspección</h1>
+      <p class="page-sub">Consulta y descarga los informes realizados por los inspectores</p>
+      <div id="reports-list"><p style="color:var(--muted);font-size:14px">No hay informes disponibles aún.</p></div>
+    </div>
+
+    <!-- ── INSPECTION ── -->
+    <div id="view-inspection" style="display:none">
       <div class="insp-header">
         <button class="btn btn-outline btn-sm" onclick="goBack()">← Volver</button>
-        <h2>🔍 Inspección de seguridad</h2>
-        <div class="progress-bar-wrap"><div class="progress-bar" id="insp-progress" style="width:0%"></div></div>
+        <h2>🔍 Inspección</h2>
+        <div class="progress-wrap"><div class="progress-bar" id="insp-progress" style="width:0%"></div></div>
         <span class="progress-label" id="progress-txt">0/4</span>
       </div>
-      <p style="color:var(--muted);font-size:13px;margin-bottom:20px;">📍 <span id="insp-location-label">-</span></p>
+      <p style="color:var(--muted);font-size:13px;margin-bottom:20px">📍 <span id="insp-location-label">—</span></p>
 
       <div class="chapters">
-        <!-- CAPÍTULO 1 -->
+
+        <!-- CAP 1 -->
         <div class="chapter" id="ch1">
           <div class="chapter-header" onclick="toggleChapter('ch1')">
             <div class="ch-num" id="ch1-num">1</div>
@@ -402,49 +313,56 @@
             <span class="ch-chevron">▼</span>
           </div>
           <div class="chapter-body">
+
             <!-- 1.1 -->
-            <div class="subcapitulo">
+            <div class="subcap">
               <div class="subcap-title"><span class="subcap-num">1.1</span> Adhesión Plan PRL</div>
-              <div class="upload-zone" id="zone-11">
+              <div class="upload-zone">
                 <div class="upload-icon">📄</div>
                 <p>Sube foto de la <strong>portada del Plan PRL</strong></p>
-                <p style="margin-top:4px;font-size:12px;">La IA leerá la ubicación y nombre de la instalación</p>
+                <p style="margin-top:4px;font-size:11px;color:var(--muted)">La IA leerá empresa, ubicación y fecha</p>
                 <input type="file" accept="image/*" onchange="handlePhoto(event,'11')">
               </div>
               <div id="photos-11" class="photos-grid"></div>
-              <div id="ai-11" class="ai-result" style="display:none;"></div>
-              <div id="confirm-11" style="display:none;" class="mt-12">
-                <p style="font-size:13px;margin-bottom:8px;">IA detectada — confirma los datos:</p>
-                <div class="field"><label>Ubicación detectada</label><input type="text" id="loc-11" /></div>
-                <div class="field"><label>Nombre instalación</label><input type="text" id="name-11" /></div>
+              <div id="ai-11" class="ai-result" style="display:none"></div>
+              <div id="confirm-11" class="confirm-block" style="display:none">
+                <h4>📝 Confirma o corrige los datos extraídos:</h4>
+                <div class="field"><label>Empresa / Instalación</label><input type="text" id="name-11" placeholder="Nombre de la empresa…"/></div>
+                <div class="field"><label>Ubicación / Dirección</label><input type="text" id="loc-11" placeholder="Dirección de la instalación…"/></div>
+                <div class="field"><label>Observaciones (fecha, revisión…)</label><input type="text" id="obs-11" placeholder="Fecha del plan, nº revisión, etc."/></div>
                 <div class="confirm-row">
-                  <button class="btn btn-ok btn-sm" onclick="confirmSection('11')">✓ Confirmar</button>
-                  <button class="btn btn-outline btn-sm" onclick="editSection('11')">✏️ Editar</button>
+                  <button class="btn btn-ok btn-sm" onclick="confirmSection('11')">✓ Confirmar datos</button>
                 </div>
-                <div id="sec-11-done" style="display:none;color:var(--ok);font-size:13px;margin-top:8px;">✅ Sección confirmada</div>
+                <div id="sec-11-done" class="done-badge">✅ Sección 1.1 confirmada</div>
               </div>
             </div>
+
             <!-- 1.2 -->
-            <div class="subcapitulo">
+            <div class="subcap">
               <div class="subcap-title"><span class="subcap-num">1.2</span> Libro de Subcontratación</div>
-              <div class="upload-zone" id="zone-12">
+              <div class="upload-zone">
                 <div class="upload-icon">📋</div>
                 <p>Sube foto de la <strong>hoja de empresas subcontratadas</strong></p>
+                <p style="margin-top:4px;font-size:11px;color:var(--muted)">La IA leerá las empresas y datos del registro</p>
                 <input type="file" accept="image/*" onchange="handlePhoto(event,'12')">
               </div>
               <div id="photos-12" class="photos-grid"></div>
-              <div id="ai-12" class="ai-result" style="display:none;"></div>
-              <div id="confirm-12" style="display:none;margin-top:12px;">
+              <div id="ai-12" class="ai-result" style="display:none"></div>
+              <div id="confirm-12" class="confirm-block" style="display:none">
+                <h4>📝 Empresas detectadas — confirma el registro:</h4>
+                <div class="field"><label>Empresas subcontratadas</label><textarea id="empresas-12" rows="3" placeholder="Una empresa por línea…"></textarea></div>
+                <div class="field"><label>Otros datos (CIF, fechas…)</label><input type="text" id="obs-12" placeholder="Datos adicionales detectados…"/></div>
                 <div class="confirm-row">
-                  <button class="btn btn-ok btn-sm" onclick="confirmSection('12')">✓ Documento verificado</button>
+                  <button class="btn btn-ok btn-sm" onclick="confirmSection('12')">✓ Confirmar registro</button>
                 </div>
-                <div id="sec-12-done" style="display:none;color:var(--ok);font-size:13px;margin-top:8px;">✅ Sección confirmada</div>
+                <div id="sec-12-done" class="done-badge">✅ Sección 1.2 confirmada</div>
               </div>
             </div>
+
           </div>
         </div>
 
-        <!-- CAPÍTULO 2 -->
+        <!-- CAP 2 -->
         <div class="chapter" id="ch2">
           <div class="chapter-header" onclick="toggleChapter('ch2')">
             <div class="ch-num" id="ch2-num">2</div>
@@ -452,136 +370,152 @@
             <span class="ch-chevron">▼</span>
           </div>
           <div class="chapter-body">
+
             <!-- 2.1 -->
-            <div class="subcapitulo">
+            <div class="subcap">
               <div class="subcap-title"><span class="subcap-num">2.1</span> Inspección General</div>
               <div class="upload-zone" id="zone-21">
                 <div class="upload-icon">🏥</div>
                 <p>Sube hasta <strong>3 fotografías del botiquín</strong></p>
+                <p style="margin-top:4px;font-size:11px;color:var(--muted)">La IA identificará los elementos presentes</p>
                 <input type="file" accept="image/*" multiple onchange="handleMultiPhoto(event,'21')">
               </div>
               <div id="photos-21" class="photos-grid"></div>
-              <div id="ai-21" class="ai-result" style="display:none;"></div>
-              <div id="checklist-21" style="display:none;">
-                <p style="font-size:13px;margin:14px 0 10px;">Confirma el contenido del botiquín:</p>
+              <div id="ai-21" class="ai-result" style="display:none"></div>
+              <div id="checklist-21" style="display:none">
+                <p style="font-size:13px;margin:14px 0 10px;font-weight:500">Confirma el contenido del botiquín:</p>
                 <div class="checklist">
-                  <div class="check-item" onclick="toggleCheck(this,'tijeras')"><div class="check-box"></div><span class="check-label">✂️ Tijeras</span></div>
-                  <div class="check-item" onclick="toggleCheck(this,'vendas')"><div class="check-box"></div><span class="check-label">🩹 Vendas</span></div>
-                  <div class="check-item" onclick="toggleCheck(this,'tiritas')"><div class="check-box"></div><span class="check-label">🩺 Tiritas</span></div>
-                  <div class="check-item" onclick="toggleCheck(this,'gasas')"><div class="check-box"></div><span class="check-label">🫧 Gasas</span></div>
-                  <div class="check-item" onclick="toggleCheck(this,'agua_ox')"><div class="check-box"></div><span class="check-label">💧 Agua oxigenada</span></div>
-                  <div class="check-item" id="check-otros"><div class="check-box" onclick="toggleCheck(document.getElementById('check-otros'),'otros')"></div><span class="check-label">📦 Otros:</span> <input type="text" id="otros-texto" style="flex:1;background:transparent;border:none;border-bottom:1px solid var(--border);padding:4px;font-size:13px;color:var(--text);outline:none;" placeholder="especificar…" /></div>
+                  <div class="check-item" onclick="toggleCheck(this,'tijeras')"><div class="check-box"></div><span>✂️ Tijeras</span></div>
+                  <div class="check-item" onclick="toggleCheck(this,'vendas')"><div class="check-box"></div><span>🩹 Vendas</span></div>
+                  <div class="check-item" onclick="toggleCheck(this,'tiritas')"><div class="check-box"></div><span>🩺 Tiritas / Apósitos</span></div>
+                  <div class="check-item" onclick="toggleCheck(this,'gasas')"><div class="check-box"></div><span>🫧 Gasas</span></div>
+                  <div class="check-item" onclick="toggleCheck(this,'agua_ox')"><div class="check-box"></div><span>💧 Agua oxigenada</span></div>
+                  <div class="check-item" id="check-otros">
+                    <div class="check-box" onclick="event.stopPropagation();toggleCheck(document.getElementById('check-otros'),'otros')"></div>
+                    <span>📦 Otros:</span>
+                    <input type="text" id="otros-texto" onclick="event.stopPropagation()" style="flex:1;background:transparent;border:none;border-bottom:1px solid var(--border);padding:4px;font-size:13px;color:var(--text);outline:none" placeholder="especificar…"/>
+                  </div>
                 </div>
-                <button class="btn btn-ok btn-sm mt-12" onclick="confirmSection('21')">✓ Confirmar checklist</button>
-                <div id="sec-21-done" style="display:none;color:var(--ok);font-size:13px;margin-top:8px;">✅ Sección confirmada</div>
+                <div class="confirm-row">
+                  <button class="btn btn-ok btn-sm" onclick="confirmSection('21')">✓ Confirmar checklist</button>
+                </div>
+                <div id="sec-21-done" class="done-badge">✅ Sección 2.1 confirmada</div>
               </div>
             </div>
+
             <!-- 2.2 -->
-            <div class="subcapitulo">
+            <div class="subcap">
               <div class="subcap-title"><span class="subcap-num">2.2</span> Caducidad del botiquín</div>
-              <div class="upload-zone" id="zone-22">
+              <div class="upload-zone">
                 <div class="upload-icon">📅</div>
-                <p>Sube foto de la <strong>fecha de caducidad</strong> del botiquín</p>
-                <p style="margin-top:4px;font-size:12px;">La IA leerá la fecha automáticamente</p>
+                <p>Sube foto de la <strong>etiqueta de caducidad</strong></p>
+                <p style="margin-top:4px;font-size:11px;color:var(--muted)">La IA leerá la fecha automáticamente</p>
                 <input type="file" accept="image/*" onchange="handlePhoto(event,'22')">
               </div>
               <div id="photos-22" class="photos-grid"></div>
-              <div id="ai-22" class="ai-result" style="display:none;"></div>
-              <div id="date-confirm-22" style="display:none;margin-top:14px;">
-                <div class="field">
-                  <label>Fecha detectada — confirma o modifica</label>
-                  <input type="date" id="date-22" />
-                </div>
+              <div id="ai-22" class="ai-result" style="display:none"></div>
+              <div id="date-confirm-22" class="confirm-block" style="display:none">
+                <h4>📅 Confirma o corrige la fecha de caducidad:</h4>
+                <div class="field"><label>Fecha de caducidad detectada</label><input type="date" id="date-22"/></div>
+                <div id="ai-date-ctx" style="font-size:12px;color:var(--muted);margin-top:-10px;margin-bottom:12px"></div>
                 <div class="confirm-row">
                   <button class="btn btn-primary btn-sm" onclick="checkExpiry()">Comprobar fecha →</button>
                 </div>
                 <div id="expiry-result"></div>
+                <div id="sec-22-done" class="done-badge">✅ Sección 2.2 confirmada</div>
               </div>
             </div>
+
           </div>
         </div>
+
       </div><!-- /chapters -->
 
       <div class="nav-row">
         <button class="btn btn-outline" onclick="goBack()">← Cancelar</button>
-        <button class="btn btn-primary" onclick="finishInspection()">Finalizar inspección ✓</button>
+        <button class="btn btn-ok" onclick="finishInspection()">Finalizar inspección ✓</button>
       </div>
     </div>
+
   </div><!-- /app-content -->
 </div>
 
-<!-- ══════════ MODAL ══════════ -->
+<!-- ════════════ MODALES ════════════ -->
 <div class="modal-overlay" id="modal-finish">
   <div class="modal">
     <h3>🏁 ¿Finalizar inspección?</h3>
-    <p>Se guardará el informe con todos los datos recopilados. Esta acción no se puede deshacer.</p>
+    <p>Se generará el informe completo y quedará disponible para el administrador. Esta acción no se puede deshacer.</p>
     <div class="modal-btns">
-      <button class="btn btn-outline" onclick="closeModal()">Cancelar</button>
+      <button class="btn btn-outline" onclick="closeModal('modal-finish')">Cancelar</button>
       <button class="btn btn-ok" onclick="saveInspection()">Guardar informe</button>
     </div>
   </div>
 </div>
 
-<!-- ══════════ TOAST ══════════ -->
-<div class="toast" id="toast">
-  <span id="toast-icon">✅</span>
-  <span id="toast-msg">-</span>
+<div class="modal-overlay" id="modal-report">
+  <div class="modal">
+    <h3 id="mr-title">Informe de inspección</h3>
+    <p id="mr-meta" style="color:var(--muted);font-size:13px;margin-bottom:16px"></p>
+    <div id="mr-body"></div>
+    <div class="modal-btns" style="margin-top:20px">
+      <button class="btn btn-outline btn-sm" onclick="closeModal('modal-report')">Cerrar</button>
+      <button class="btn btn-pdf btn-sm" id="mr-pdf-btn">⬇ Descargar PDF</button>
+    </div>
+  </div>
 </div>
 
+<div class="toast" id="toast"><span id="toast-icon"></span><span id="toast-msg"></span></div>
+
 <script>
-// ── USERS ──────────────────────────────────────────────
+// ════════════════════════════════════════════════════════
+//  USUARIOS
+// ════════════════════════════════════════════════════════
 const USERS = {
-  admin: {
-    password: 'admin123',
-    name: 'Admin Pérez',
-    role: 'Administrador',
-    type: 'admin'
-  },
-  inspector1: {
-    password: 'insp2024',
-    name: 'Carlos Rodríguez',
-    role: 'Inspector de seguridad',
-    type: 'inspector'
-  }
+  admin:     { password:'admin123', name:'Admin Pérez',      role:'Administrador',        type:'admin'     },
+  inspector1:{ password:'insp2024', name:'Carlos Rodríguez', role:'Inspector de seguridad',type:'inspector' }
 };
 
-// ── STATE ──────────────────────────────────────────────
+// ════════════════════════════════════════════════════════
+//  ESTADO GLOBAL
+// ════════════════════════════════════════════════════════
 let currentUser = null;
 let pendingInspection = null;
-let completedInspections = [];
+let completedInspections = [];   // array de objetos InspectionReport
+let currentInspData = {};        // datos recogidos durante la inspección activa
 let sectionsDone = {};
-let photos = { '11':[], '12':[], '21':[], '22':[] };
+let photos = {};
 let checklistItems = {};
+let currentTab = 'dashboard';
+let viewingReportIdx = null;
 
-// ── AUTH ───────────────────────────────────────────────
+// ════════════════════════════════════════════════════════
+//  AUTH
+// ════════════════════════════════════════════════════════
 function doLogin() {
   const u = document.getElementById('inp-user').value.trim();
   const p = document.getElementById('inp-pass').value;
+  const err = document.getElementById('login-error');
   if (USERS[u] && USERS[u].password === p) {
-    currentUser = { username: u, ...USERS[u] };
-    document.getElementById('login-error').style.display = 'none';
+    currentUser = { username:u, ...USERS[u] };
+    err.style.display = 'none';
     launchApp();
-  } else {
-    document.getElementById('login-error').style.display = 'block';
-  }
+  } else { err.style.display = 'block'; }
 }
-function quickLogin(u, p) {
+function quickLogin(u,p) {
   document.getElementById('inp-user').value = u;
   document.getElementById('inp-pass').value = p;
   doLogin();
 }
-function doLogout() {
-  currentUser = null;
-  showScreen('login');
-}
+function doLogout() { currentUser = null; showScreen('login'); }
 document.getElementById('inp-pass').addEventListener('keydown', e => { if (e.key==='Enter') doLogin(); });
 
-// ── SCREENS ────────────────────────────────────────────
+// ════════════════════════════════════════════════════════
+//  PANTALLAS
+// ════════════════════════════════════════════════════════
 function showScreen(name) {
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
   document.getElementById('screen-'+name).classList.add('active');
 }
-
 function launchApp() {
   showScreen('app');
   const av = document.getElementById('nav-avatar');
@@ -589,53 +523,68 @@ function launchApp() {
   av.className = 'avatar avatar-'+currentUser.type;
   document.getElementById('nav-name').textContent = currentUser.name;
   document.getElementById('nav-role').textContent = currentUser.role;
-  showDashboard();
+  // Tabs solo para admin
+  document.getElementById('tab-nav').style.display = currentUser.type==='admin' ? 'flex' : 'none';
+  switchTab('dashboard');
 }
 
-// ── DASHBOARD ──────────────────────────────────────────
-function showDashboard() {
-  document.getElementById('view-dashboard').style.display = 'block';
+// ════════════════════════════════════════════════════════
+//  TABS (admin)
+// ════════════════════════════════════════════════════════
+function switchTab(tab) {
+  currentTab = tab;
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  const tabBtn = document.getElementById('tab-'+tab);
+  if (tabBtn) tabBtn.classList.add('active');
+  document.getElementById('view-dashboard').style.display = tab==='dashboard' ? 'block' : 'none';
+  document.getElementById('view-reports').style.display  = tab==='reports'   ? 'block' : 'none';
   document.getElementById('view-inspection').style.display = 'none';
-  renderDashboard();
+  if (tab==='dashboard') renderDashboard();
+  if (tab==='reports')   renderReports();
 }
+
+// ════════════════════════════════════════════════════════
+//  DASHBOARD
+// ════════════════════════════════════════════════════════
+function showDashboard() {
+  document.getElementById('view-inspection').style.display = 'none';
+  switchTab('dashboard');
+}
+function goBack() { showDashboard(); }
+
 function renderDashboard() {
-  const isAdmin = currentUser.type === 'admin';
+  const isAdmin = currentUser.type==='admin';
   document.getElementById('dash-title').textContent = isAdmin ? 'Panel de administración' : 'Mis inspecciones';
-  document.getElementById('dash-sub').textContent = isAdmin
-    ? 'Gestiona y solicita inspecciones de seguridad'
-    : `Bienvenido, ${currentUser.name}`;
+  document.getElementById('dash-sub').textContent   = isAdmin ? 'Gestiona y solicita inspecciones de seguridad' : `Bienvenido, ${currentUser.name}`;
   document.getElementById('admin-panel').style.display = isAdmin ? 'block' : 'none';
 
-  // Alert
-  const alert = document.getElementById('inspection-pending-alert');
-  if (pendingInspection && (isAdmin || pendingInspection.assignedTo === currentUser.username)) {
-    alert.style.display = 'flex';
+  const showAlert = pendingInspection && (isAdmin || pendingInspection.assignedTo===currentUser.username);
+  const alertEl = document.getElementById('inspection-pending-alert');
+  alertEl.style.display = showAlert ? 'flex' : 'none';
+  if (showAlert) {
     document.getElementById('alert-location').textContent = pendingInspection.location;
     document.getElementById('alert-by').textContent = pendingInspection.requestedBy;
-  } else {
-    alert.style.display = 'none';
   }
 
-  // Stats
-  document.getElementById('stat-done').textContent = completedInspections.length;
+  document.getElementById('stat-done').textContent   = completedInspections.length;
   document.getElementById('stat-pending').textContent = pendingInspection ? 1 : 0;
-  const alerts = completedInspections.filter(i => i.hasAlert).length;
-  document.getElementById('stat-alerts').textContent = alerts;
+  document.getElementById('stat-alerts').textContent  = completedInspections.filter(i=>i.hasAlert).length;
 
-  // History
   const list = document.getElementById('history-list');
-  if (completedInspections.length === 0) {
-    list.innerHTML = '<p style="color:var(--muted);font-size:14px;">No hay inspecciones registradas aún.</p>';
+  if (!completedInspections.length) {
+    list.innerHTML = '<p style="color:var(--muted);font-size:14px">No hay inspecciones registradas.</p>';
   } else {
-    list.innerHTML = completedInspections.map(i => `
-      <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 16px;background:var(--surface2);border-radius:8px;margin-bottom:8px;">
-        <div>
-          <div style="font-weight:600;font-size:14px;">${i.location}</div>
-          <div style="font-size:12px;color:var(--muted);">${i.date} · ${i.inspector}</div>
+    list.innerHTML = completedInspections.map((r,i) => `
+      <div class="report-row">
+        <div class="report-info">
+          <div class="report-title">${r.location}</div>
+          <div class="report-meta">${r.date} · ${r.inspector}</div>
         </div>
-        <span class="tag ${i.hasAlert ? 'tag-danger' : 'tag-done'}">${i.hasAlert ? '⚠️ Alerta' : '✅ OK'}</span>
-      </div>
-    `).join('');
+        <div class="report-actions">
+          <span class="tag ${r.hasAlert?'tag-danger':'tag-ok'}">${r.hasAlert?'⚠️ Botiquín caducado':'✅ Sin alertas'}</span>
+          ${isAdmin?`<button class="btn btn-pdf btn-sm" onclick="viewReport(${i})">📄 Ver</button>`:''}
+        </div>
+      </div>`).join('');
   }
 }
 
@@ -646,260 +595,519 @@ function requestInspection() {
     location: loc,
     assignedTo: document.getElementById('inp-inspector').value,
     requestedBy: currentUser.name,
-    date: new Date().toLocaleDateString('es-ES')
   };
   document.getElementById('inp-location').value = '';
   renderDashboard();
   showToast('📋','Inspección solicitada correctamente');
 }
 
-// ── INSPECTION ─────────────────────────────────────────
+// ════════════════════════════════════════════════════════
+//  REPORTS (admin)
+// ════════════════════════════════════════════════════════
+function renderReports() {
+  const list = document.getElementById('reports-list');
+  if (!completedInspections.length) {
+    list.innerHTML = '<p style="color:var(--muted);font-size:14px">No hay informes disponibles aún.</p>';
+    return;
+  }
+  list.innerHTML = completedInspections.map((r,i) => `
+    <div class="report-row">
+      <div class="report-info">
+        <div class="report-title">📄 ${r.location}</div>
+        <div class="report-meta">${r.date} · Inspector: ${r.inspector} · ${r.sectionsDone.length}/4 secciones completadas</div>
+      </div>
+      <div class="report-actions">
+        <span class="tag ${r.hasAlert?'tag-danger':'tag-ok'}">${r.hasAlert?'⚠️ ALERTA CADUCIDAD':'✅ OK'}</span>
+        <button class="btn btn-outline btn-sm" onclick="viewReport(${i})">👁 Ver</button>
+        <button class="btn btn-pdf btn-sm" onclick="downloadPDF(${i})">⬇ PDF</button>
+      </div>
+    </div>`).join('');
+}
+
+// ════════════════════════════════════════════════════════
+//  VER INFORME
+// ════════════════════════════════════════════════════════
+function viewReport(idx) {
+  viewingReportIdx = idx;
+  const r = completedInspections[idx];
+  document.getElementById('mr-title').textContent = `Informe — ${r.location}`;
+  document.getElementById('mr-meta').textContent  = `${r.date} · Inspector: ${r.inspector}`;
+  document.getElementById('mr-pdf-btn').onclick = () => downloadPDF(idx);
+
+  let html = '';
+
+  // 1.1
+  if (r.sec11) {
+    html += `<div class="report-detail-section">
+      <h4>1.1 · Adhesión Plan PRL</h4>
+      <p><strong>Empresa:</strong> ${r.sec11.empresa||'—'}</p>
+      <p><strong>Ubicación:</strong> ${r.sec11.ubicacion||'—'}</p>
+      <p><strong>Observaciones:</strong> ${r.sec11.obs||'—'}</p>
+      ${r.sec11.photo?`<img class="report-detail-img" src="${r.sec11.photo}" alt="Foto Plan PRL">`:''}
+    </div>`;
+  }
+  // 1.2
+  if (r.sec12) {
+    html += `<div class="report-detail-section">
+      <h4>1.2 · Libro de Subcontratación</h4>
+      <p><strong>Empresas:</strong> ${r.sec12.empresas||'—'}</p>
+      <p><strong>Datos adicionales:</strong> ${r.sec12.obs||'—'}</p>
+      ${r.sec12.photo?`<img class="report-detail-img" src="${r.sec12.photo}" alt="Foto Libro Subcontratación">`:''}
+    </div>`;
+  }
+  // 2.1
+  if (r.sec21) {
+    const items = Object.entries(r.sec21.checklist||{}).filter(([,v])=>v).map(([k])=>k);
+    html += `<div class="report-detail-section">
+      <h4>2.1 · Inspección General Botiquín</h4>
+      <p><strong>Elementos confirmados:</strong></p>
+      <ul>${items.map(it=>`<li>${it}</li>`).join('')||'<li>Ninguno marcado</li>'}</ul>
+      ${r.sec21.otros?`<p><strong>Otros:</strong> ${r.sec21.otros}</p>`:''}
+      ${r.sec21.aiObs?`<p><strong>Observación IA:</strong> ${r.sec21.aiObs}</p>`:''}
+    </div>`;
+  }
+  // 2.2
+  if (r.sec22) {
+    html += `<div class="report-detail-section">
+      <h4>2.2 · Caducidad Botiquín</h4>
+      <p><strong>Fecha caducidad:</strong> ${r.sec22.fecha||'—'}</p>
+      <p><strong>Estado:</strong> ${r.hasAlert?'⚠️ CADUCADO — trabajos paralizados':'✅ En vigor'}</p>
+      ${r.sec22.photo?`<img class="report-detail-img" src="${r.sec22.photo}" alt="Foto Caducidad">`:''}
+    </div>`;
+  }
+
+  document.getElementById('mr-body').innerHTML = html;
+  document.getElementById('modal-report').classList.add('open');
+}
+
+// ════════════════════════════════════════════════════════
+//  GENERAR PDF
+// ════════════════════════════════════════════════════════
+async function downloadPDF(idx) {
+  const r = completedInspections[idx];
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF({ orientation:'portrait', unit:'mm', format:'a4' });
+
+  const W = 210, margin = 18, contentW = W - margin*2;
+  let y = 20;
+
+  // Helper functions
+  const addLine = (h=5) => { y += h; };
+  const checkPage = (need=20) => { if (y + need > 280) { doc.addPage(); y = 20; } };
+
+  // ── Encabezado ──────────────────────────────────────
+  doc.setFillColor(249, 115, 22);
+  doc.rect(0, 0, W, 22, 'F');
+  doc.setTextColor(255,255,255);
+  doc.setFont('helvetica','bold');
+  doc.setFontSize(16);
+  doc.text('SafeCheck — Informe de Inspección de Seguridad', margin, 14);
+  y = 30;
+
+  // ── Datos generales ──────────────────────────────────
+  doc.setTextColor(30,30,30);
+  doc.setFont('helvetica','bold'); doc.setFontSize(11);
+  doc.text('DATOS DE LA INSPECCIÓN', margin, y); y+=7;
+  doc.setFillColor(241,245,249); doc.rect(margin, y-4, contentW, 28, 'F');
+
+  doc.setFont('helvetica','normal'); doc.setFontSize(10);
+  doc.text(`Instalación:  ${r.location}`, margin+4, y+2);
+  doc.text(`Inspector:    ${r.inspector}`, margin+4, y+8);
+  doc.text(`Fecha:        ${r.date}`, margin+4, y+14);
+  doc.text(`Estado:       ${r.hasAlert ? '⚠ ALERTA — Botiquín caducado' : '✅ Sin alertas'}`, margin+4, y+20);
+  y += 34;
+
+  // ── Línea separadora ─────────────────────────────────
+  const drawDivider = (title) => {
+    checkPage(14);
+    doc.setFillColor(249,115,22);
+    doc.rect(margin, y, contentW, 7, 'F');
+    doc.setTextColor(255,255,255);
+    doc.setFont('helvetica','bold'); doc.setFontSize(10);
+    doc.text(title, margin+3, y+5);
+    doc.setTextColor(30,30,30);
+    doc.setFont('helvetica','normal'); doc.setFontSize(10);
+    y += 11;
+  };
+
+  const addField = (label, value) => {
+    checkPage(8);
+    doc.setFont('helvetica','bold'); doc.setFontSize(9);
+    doc.text(label+':', margin+2, y);
+    doc.setFont('helvetica','normal');
+    const lines = doc.splitTextToSize(value||'—', contentW-50);
+    doc.text(lines, margin+42, y);
+    y += lines.length * 5 + 2;
+  };
+
+  // ── Sección 1.1 ──────────────────────────────────────
+  drawDivider('1.1 · Adhesión Plan PRL');
+  if (r.sec11) {
+    addField('Empresa', r.sec11.empresa);
+    addField('Ubicación', r.sec11.ubicacion);
+    addField('Observaciones', r.sec11.obs);
+    if (r.sec11.photo) {
+      checkPage(55);
+      try { doc.addImage(r.sec11.photo,'JPEG',margin,y,80,55); y+=60; } catch(e){}
+    }
+  } else { doc.text('Sección no completada', margin+2, y); y+=8; }
+  addLine(4);
+
+  // ── Sección 1.2 ──────────────────────────────────────
+  checkPage(20); drawDivider('1.2 · Libro de Subcontratación');
+  if (r.sec12) {
+    addField('Empresas', r.sec12.empresas);
+    addField('Datos adicionales', r.sec12.obs);
+    if (r.sec12.photo) {
+      checkPage(55);
+      try { doc.addImage(r.sec12.photo,'JPEG',margin,y,80,55); y+=60; } catch(e){}
+    }
+  } else { doc.text('Sección no completada', margin+2, y); y+=8; }
+  addLine(4);
+
+  // ── Sección 2.1 ──────────────────────────────────────
+  checkPage(20); drawDivider('2.1 · Inspección General Botiquín');
+  if (r.sec21) {
+    const LABELS = {tijeras:'Tijeras',vendas:'Vendas',tiritas:'Tiritas/Apósitos',gasas:'Gasas',agua_ox:'Agua oxigenada',otros:'Otros'};
+    const checklist = r.sec21.checklist||{};
+    doc.setFont('helvetica','bold'); doc.setFontSize(9); doc.text('Elementos presentes:', margin+2, y); y+=6;
+    Object.entries(LABELS).forEach(([k,label]) => {
+      checkPage(7);
+      const checked = checklist[k];
+      doc.setFillColor(checked?34:200, checked?197:200, checked?94:200);
+      doc.rect(margin+4, y-4, 4, 4, 'F');
+      doc.setFont('helvetica','normal'); doc.setFontSize(9);
+      doc.text(`${label}: ${checked?'✓ Presente':'✗ No confirmado'}`, margin+12, y);
+      y+=6;
+    });
+    if (r.sec21.otros) { addField('Otros (especificado)', r.sec21.otros); }
+    if (r.sec21.aiObs) { addField('Observación IA', r.sec21.aiObs); }
+  } else { doc.text('Sección no completada', margin+2, y); y+=8; }
+  addLine(4);
+
+  // ── Sección 2.2 ──────────────────────────────────────
+  checkPage(20); drawDivider('2.2 · Caducidad del Botiquín');
+  if (r.sec22) {
+    addField('Fecha de caducidad', r.sec22.fecha);
+    if (r.hasAlert) {
+      checkPage(16);
+      doc.setFillColor(254,226,226); doc.rect(margin, y-2, contentW, 14, 'F');
+      doc.setFont('helvetica','bold'); doc.setFontSize(10); doc.setTextColor(185,28,28);
+      doc.text('⚠ ALERTA: BOTIQUÍN CADUCADO — PARALIZAR TRABAJOS', margin+3, y+5);
+      doc.text('Reponer el botiquín antes de reanudar la actividad.', margin+3, y+11);
+      doc.setTextColor(30,30,30); y+=18;
+    }
+    if (r.sec22.photo) {
+      checkPage(55);
+      try { doc.addImage(r.sec22.photo,'JPEG',margin,y,80,55); y+=60; } catch(e){}
+    }
+  } else { doc.text('Sección no completada', margin+2, y); y+=8; }
+  addLine(6);
+
+  // ── Pie de página ────────────────────────────────────
+  checkPage(20);
+  doc.setFillColor(241,245,249); doc.rect(margin, y, contentW, 18, 'F');
+  doc.setFont('helvetica','italic'); doc.setFontSize(8); doc.setTextColor(100,116,139);
+  doc.text(`Informe generado automáticamente por SafeCheck el ${new Date().toLocaleString('es-ES')}`, margin+3, y+7);
+  doc.text('Este documento tiene validez como registro de inspección de seguridad laboral.', margin+3, y+13);
+
+  doc.save(`SafeCheck_${r.location.replace(/\s+/g,'-')}_${r.date.replace(/\//g,'-')}.pdf`);
+  showToast('📥','PDF descargado correctamente');
+}
+
+// ════════════════════════════════════════════════════════
+//  INSPECCIÓN
+// ════════════════════════════════════════════════════════
 function startInspection() {
-  // Reset state
   sectionsDone = {};
-  photos = { '11':[], '12':[], '21':[], '22':[] };
+  photos = {'11':[],'12':[],'21':[],'22':[]};
   checklistItems = {};
-  document.querySelectorAll('.ai-result').forEach(el => { el.style.display='none'; el.innerHTML=''; });
-  document.querySelectorAll('[id^=confirm-],[id^=date-confirm-],[id^=checklist-]').forEach(el => el.style.display='none');
-  document.querySelectorAll('[id^=sec-][id$=-done]').forEach(el => el.style.display='none');
-  document.querySelectorAll('[id^=photos-]').forEach(el => el.innerHTML='');
+  currentInspData = {};
+
+  document.querySelectorAll('.ai-result').forEach(el=>{el.style.display='none';el.innerHTML='';});
+  document.querySelectorAll('.confirm-block').forEach(el=>el.style.display='none');
+  document.getElementById('checklist-21').style.display='none';
   document.getElementById('expiry-result').innerHTML='';
-  document.querySelectorAll('.chapter').forEach(c => c.classList.remove('open'));
-  document.querySelectorAll('.ch-num').forEach(n => { n.classList.remove('done','active'); });
-  updateProgress();
+  document.getElementById('ai-date-ctx').textContent='';
+  document.querySelectorAll('.done-badge').forEach(el=>el.style.display='none');
+  document.querySelectorAll('.photos-grid').forEach(el=>el.innerHTML='');
+  document.querySelectorAll('.chapter').forEach(c=>c.classList.remove('open'));
+  document.querySelectorAll('.ch-num').forEach(n=>n.classList.remove('done'));
+  // Reset checklist checkboxes
+  document.querySelectorAll('.check-item').forEach(el=>el.classList.remove('checked'));
+  document.getElementById('otros-texto').value='';
+  // Reset form inputs
+  ['name-11','loc-11','obs-11','empresas-12','obs-12','date-22'].forEach(id=>{
+    const el=document.getElementById(id); if(el) el.value='';
+  });
+  document.getElementById('insp-progress').style.width='0%';
+  document.getElementById('progress-txt').textContent='0/4';
+  document.getElementById('insp-location-label').textContent=pendingInspection?.location||'—';
 
-  document.getElementById('view-dashboard').style.display = 'none';
-  document.getElementById('view-inspection').style.display = 'block';
-  document.getElementById('insp-location-label').textContent = pendingInspection
-    ? pendingInspection.location
-    : 'Sin asignar';
-}
-function goBack() { showDashboard(); }
-function toggleChapter(id) {
-  const ch = document.getElementById(id);
-  ch.classList.toggle('open');
+  document.getElementById('view-dashboard').style.display='none';
+  document.getElementById('view-reports').style.display='none';
+  document.getElementById('view-inspection').style.display='block';
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
 }
 
-// ── PHOTO HANDLING ─────────────────────────────────────
-function handlePhoto(e, sec) {
-  const file = e.target.files[0];
-  if (!file) return;
-  addPhoto(file, sec);
+function toggleChapter(id) { document.getElementById(id).classList.toggle('open'); }
+
+// ════════════════════════════════════════════════════════
+//  FOTOS
+// ════════════════════════════════════════════════════════
+function handlePhoto(e,sec) { const f=e.target.files[0]; if(f) addPhoto(f,sec); }
+function handleMultiPhoto(e,sec) {
+  Array.from(e.target.files).slice(0,3-photos[sec].length).forEach(f=>addPhoto(f,sec));
 }
-function handleMultiPhoto(e, sec) {
-  const files = Array.from(e.target.files).slice(0, 3 - photos[sec].length);
-  files.forEach(f => addPhoto(f, sec));
-}
-function addPhoto(file, sec) {
-  const reader = new FileReader();
-  reader.onload = ev => {
-    photos[sec].push({ name: file.name, data: ev.target.result });
+function addPhoto(file,sec) {
+  const reader=new FileReader();
+  reader.onload=ev=>{
+    photos[sec].push({name:file.name,data:ev.target.result,type:file.type});
     renderPhotos(sec);
-    analyzePhoto(ev.target.result, sec);
+    analyzePhoto(ev.target.result,file.type,sec);
   };
   reader.readAsDataURL(file);
 }
 function renderPhotos(sec) {
-  const grid = document.getElementById('photos-'+sec);
-  grid.innerHTML = photos[sec].map((p,i) => `
+  document.getElementById('photos-'+sec).innerHTML=photos[sec].map((p,i)=>`
     <div class="photo-thumb">
       <img src="${p.data}" alt="Foto ${i+1}">
       <button class="del-btn" onclick="removePhoto(${i},'${sec}')">✕</button>
-    </div>
-  `).join('');
-  if (sec === '21') {
-    const zone = document.getElementById('zone-21');
-    if (photos['21'].length >= 3) zone.style.opacity = '0.4';
-    else zone.style.opacity = '1';
-  }
+    </div>`).join('');
+  if(sec==='21') document.getElementById('zone-21').style.opacity=photos['21'].length>=3?'0.4':'1';
 }
-function removePhoto(idx, sec) {
-  photos[sec].splice(idx,1);
-  renderPhotos(sec);
-}
+function removePhoto(idx,sec) { photos[sec].splice(idx,1); renderPhotos(sec); }
 
-// ── AI ANALYSIS ────────────────────────────────────────
-async function analyzePhoto(dataUrl, sec) {
+// ════════════════════════════════════════════════════════
+//  ANÁLISIS IA → llama al proxy /api/analyze
+// ════════════════════════════════════════════════════════
+async function analyzePhoto(dataUrl, mimeType, sec) {
   const aiBox = document.getElementById('ai-'+sec);
   aiBox.style.display = 'block';
-  aiBox.innerHTML = `<div class="ai-label"><div class="ai-spinner"></div> Analizando imagen con IA…</div>`;
+  aiBox.innerHTML = `<div class="ai-label"><div class="ai-spinner"></div> Analizando imagen con IA Claude…</div>`;
 
   const base64 = dataUrl.split(',')[1];
-  const mediaType = dataUrl.split(';')[0].split(':')[1];
-
-  let prompt = '';
-  if (sec === '11') prompt = 'Eres un asistente de inspección de seguridad laboral. Analiza esta imagen del Plan de Prevención de Riesgos Laborales (PRL). Extrae: 1) El nombre de la empresa o instalación que aparece en el documento, 2) La ubicación o dirección si es visible. Responde en JSON con campos: empresa, ubicacion, observaciones. Sé conciso.';
-  else if (sec === '12') prompt = 'Eres un asistente de inspección. Analiza esta imagen del Libro de Subcontratación. Lista brevemente las empresas o datos que puedas ver. Responde en JSON con campos: empresas (array de strings), observaciones.';
-  else if (sec === '21') prompt = 'Eres un asistente de inspección de seguridad. Analiza esta imagen de un botiquín de primeros auxilios. Identifica qué elementos son visibles: tijeras, vendas, tiritas, gasas, agua oxigenada, u otros. Responde en JSON con campos: elementos_visibles (array), elementos_faltantes (array), observaciones.';
-  else if (sec === '22') prompt = 'Eres un asistente de inspección. Analiza esta imagen y extrae la fecha de caducidad visible (del botiquín o medicamento). Responde SOLO en JSON con campos: fecha_detectada (formato YYYY-MM-DD o null si no visible), texto_original, confianza (alta/media/baja).';
 
   try {
-    const resp = await fetch('https://api.anthropic.com/v1/messages', {
+    const resp = await fetch('/api/analyze', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        model: 'claude-sonnet-4-20250514',
-        max_tokens: 1000,
-        messages: [{
-          role: 'user',
-          content: [{
-            type: 'image',
-            source: { type: 'base64', media_type: mediaType, data: base64 }
-          }, {
-            type: 'text',
-            text: prompt
-          }]
-        }]
-      })
+      body: JSON.stringify({ imageBase64: base64, mediaType: mimeType||'image/jpeg', section: sec })
     });
+
     const data = await resp.json();
-    const text = data.content?.map(b => b.text||'').join('') || '';
-    let parsed;
+
+    if (!resp.ok) throw new Error(data.error || `HTTP ${resp.status}`);
+
+    const rawText = (data.content||[]).map(b=>b.text||'').join('').trim();
+    let parsed = null;
     try {
-      const clean = text.replace(/```json|```/g,'').trim();
+      const clean = rawText.replace(/```json\s*/gi,'').replace(/```\s*/g,'').trim();
       parsed = JSON.parse(clean);
-    } catch { parsed = null; }
-    renderAIResult(sec, text, parsed);
+    } catch(_) {}
+
+    renderAIResult(sec, rawText, parsed);
   } catch(err) {
-    aiBox.innerHTML = `<div class="ai-label">⚠️ IA no disponible — introduce datos manualmente</div>`;
-    renderAIResult(sec, null, null);
+    console.error('analyzePhoto error:', err);
+    aiBox.innerHTML = `<div class="ai-label">⚠️ Error al analizar la imagen</div>
+      <p style="color:#fca5a5;font-size:12px;margin-top:4px">${err.message}</p>
+      <p style="color:var(--muted);font-size:12px;margin-top:4px">Rellena los campos manualmente. Asegúrate de que ANTHROPIC_API_KEY está configurada en Railway.</p>`;
+    openManualFallback(sec);
   }
 }
 
-function renderAIResult(sec, rawText, parsed) {
+function openManualFallback(sec) {
+  if (sec==='11') document.getElementById('confirm-11').style.display='block';
+  else if (sec==='12') document.getElementById('confirm-12').style.display='block';
+  else if (sec==='22') document.getElementById('date-confirm-22').style.display='block';
+  else if (sec==='21' && photos['21'].length>0) document.getElementById('checklist-21').style.display='block';
+}
+
+function renderAIResult(sec, raw, parsed) {
   const aiBox = document.getElementById('ai-'+sec);
-  if (sec === '11') {
-    aiBox.innerHTML = `<div class="ai-label">🤖 Análisis IA — Plan PRL</div>`;
-    if (parsed) {
-      aiBox.innerHTML += `<p><strong>Empresa/Instalación:</strong> ${parsed.empresa||'—'}</p><p><strong>Ubicación:</strong> ${parsed.ubicacion||'—'}</p>`;
-      if (parsed.observaciones) aiBox.innerHTML += `<p style="color:var(--muted);margin-top:4px;font-size:12px;">${parsed.observaciones}</p>`;
-      document.getElementById('loc-11').value = parsed.ubicacion||'';
+
+  if (sec==='11') {
+    if (parsed && (parsed.empresa||parsed.ubicacion)) {
+      aiBox.innerHTML=`<div class="ai-label">🤖 Plan PRL analizado</div>
+        <div class="ai-field"><span class="ai-fl">Empresa</span><span class="ai-fv">${parsed.empresa||'—'}</span></div>
+        <div class="ai-field"><span class="ai-fl">Ubicación</span><span class="ai-fv">${parsed.ubicacion||'—'}</span></div>
+        ${parsed.fecha_doc?`<div class="ai-field"><span class="ai-fl">Fecha documento</span><span class="ai-fv">${parsed.fecha_doc}</span></div>`:''}
+        ${parsed.revision?`<div class="ai-field"><span class="ai-fl">Revisión</span><span class="ai-fv">${parsed.revision}</span></div>`:''}
+        ${parsed.observaciones?`<div class="ai-field"><span class="ai-fl">Observaciones</span><span class="ai-fv">${parsed.observaciones}</span></div>`:''}`;
       document.getElementById('name-11').value = parsed.empresa||'';
+      document.getElementById('loc-11').value  = parsed.ubicacion||'';
+      document.getElementById('obs-11').value  = [parsed.fecha_doc, parsed.revision, parsed.observaciones].filter(Boolean).join(' · ');
     } else {
-      aiBox.innerHTML += `<p style="color:var(--muted);">No se pudo extraer datos automáticamente. Rellena los campos manualmente.</p>`;
+      aiBox.innerHTML=`<div class="ai-label">⚠️ Datos no detectados automáticamente</div>
+        <p style="color:var(--muted);font-size:13px">Rellena los campos manualmente.</p>`;
     }
-    document.getElementById('confirm-11').style.display = 'block';
+    document.getElementById('confirm-11').style.display='block';
   }
-  else if (sec === '12') {
-    aiBox.innerHTML = `<div class="ai-label">🤖 Análisis IA — Libro Subcontratación</div>`;
-    if (parsed && parsed.empresas) {
-      aiBox.innerHTML += `<p><strong>Empresas detectadas:</strong> ${parsed.empresas.join(', ')||'—'}</p>`;
-      if (parsed.observaciones) aiBox.innerHTML += `<p style="color:var(--muted);font-size:12px;margin-top:4px;">${parsed.observaciones}</p>`;
-    } else {
-      aiBox.innerHTML += `<p style="color:var(--muted);">Documento capturado. Verifica visualmente.</p>`;
-    }
-    document.getElementById('confirm-12').style.display = 'block';
-  }
-  else if (sec === '21') {
-    aiBox.innerHTML = `<div class="ai-label">🤖 Análisis IA — Contenido botiquín</div>`;
+
+  else if (sec==='12') {
     if (parsed) {
-      if (parsed.elementos_visibles?.length) aiBox.innerHTML += `<p>✅ <strong>Detectado:</strong> ${parsed.elementos_visibles.join(', ')}</p>`;
-      if (parsed.elementos_faltantes?.length) aiBox.innerHTML += `<p>⚠️ <strong>No visibles:</strong> ${parsed.elementos_faltantes.join(', ')}</p>`;
-      if (parsed.observaciones) aiBox.innerHTML += `<p style="color:var(--muted);font-size:12px;margin-top:4px;">${parsed.observaciones}</p>`;
+      aiBox.innerHTML=`<div class="ai-label">🤖 Libro de Subcontratación analizado</div>
+        ${parsed.empresas?.length?`<div class="ai-field"><span class="ai-fl">Empresas (${parsed.empresas.length})</span><span class="ai-fv">${parsed.empresas.join(' · ')}</span></div>`:''}
+        ${parsed.cifs?.length?`<div class="ai-field"><span class="ai-fl">CIFs</span><span class="ai-fv">${parsed.cifs.join(' · ')}</span></div>`:''}
+        ${parsed.actividades?.length?`<div class="ai-field"><span class="ai-fl">Actividades</span><span class="ai-fv">${parsed.actividades.join(', ')}</span></div>`:''}
+        ${parsed.fechas?.length?`<div class="ai-field"><span class="ai-fl">Fechas</span><span class="ai-fv">${parsed.fechas.join(' · ')}</span></div>`:''}
+        ${parsed.observaciones?`<div class="ai-field"><span class="ai-fl">Observaciones</span><span class="ai-fv">${parsed.observaciones}</span></div>`:''}`;
+      document.getElementById('empresas-12').value = (parsed.empresas||[]).join('\n');
+      document.getElementById('obs-12').value = [
+        (parsed.cifs||[]).join(', '), (parsed.fechas||[]).join(', '), parsed.observaciones
+      ].filter(Boolean).join(' | ');
     } else {
-      aiBox.innerHTML += `<p style="color:var(--muted);">Imágenes cargadas. Completa el checklist.</p>`;
+      aiBox.innerHTML=`<div class="ai-label">⚠️ Imagen procesada</div>
+        <p style="font-size:13px;color:var(--muted)">Verifica el documento y confirma manualmente.</p>`;
     }
-    if (photos['21'].length > 0) document.getElementById('checklist-21').style.display = 'block';
+    document.getElementById('confirm-12').style.display='block';
   }
-  else if (sec === '22') {
-    aiBox.innerHTML = `<div class="ai-label">🤖 Análisis IA — Fecha de caducidad</div>`;
-    const dateInput = document.getElementById('date-22');
-    if (parsed?.fecha_detectada) {
-      aiBox.innerHTML += `<p>📅 <strong>Fecha detectada:</strong> ${parsed.texto_original||parsed.fecha_detectada} (confianza: ${parsed.confianza||'media'})</p>`;
-      dateInput.value = parsed.fecha_detectada;
+
+  else if (sec==='21') {
+    if (parsed) {
+      const aiObs = parsed.observaciones||'';
+      aiBox.innerHTML=`<div class="ai-label">🤖 Contenido botiquín analizado</div>
+        ${parsed.elementos_visibles?.length?`<div class="ai-field"><span class="ai-fl">✅ Detectados</span><span class="ai-fv">${parsed.elementos_visibles.join(', ')}</span></div>`:''}
+        ${parsed.elementos_faltantes?.length?`<div class="ai-field"><span class="ai-fl">⚠️ No visibles</span><span class="ai-fv" style="color:var(--warn)">${parsed.elementos_faltantes.join(', ')}</span></div>`:''}
+        ${parsed.estado_general?`<div class="ai-field"><span class="ai-fl">Estado general</span><span class="ai-fv">${parsed.estado_general}</span></div>`:''}
+        ${aiObs?`<div class="ai-field"><span class="ai-fl">Observaciones</span><span class="ai-fv">${aiObs}</span></div>`:''}`;
+      // Guardar obs para el informe
+      currentInspData.aiObs21 = aiObs;
+      // Pre-marcar elementos detectados
+      const map={tijeras:'tijeras',vendas:'vendas',tiritas:'tiritas','apósitos':'tiritas',gasas:'gasas','agua oxigenada':'agua_ox'};
+      (parsed.elementos_visibles||[]).forEach(el=>{
+        const key=map[el.toLowerCase().trim()];
+        if(key){ const item=document.querySelector(`.check-item[onclick*="${key}"]`); if(item&&!item.classList.contains('checked')) item.click(); }
+      });
     } else {
-      aiBox.innerHTML += `<p style="color:var(--muted);">No se detectó fecha automáticamente. Introdúcela manualmente.</p>`;
-      dateInput.value = '';
+      aiBox.innerHTML=`<div class="ai-label">⚠️ Imagen procesada</div>
+        <p style="font-size:13px;color:var(--muted)">Completa el checklist manualmente.</p>`;
     }
-    document.getElementById('date-confirm-22').style.display = 'block';
+    if (photos['21'].length>0) document.getElementById('checklist-21').style.display='block';
+  }
+
+  else if (sec==='22') {
+    const dateInput = document.getElementById('date-22');
+    const ctx = document.getElementById('ai-date-ctx');
+    if (parsed?.fecha_detectada && parsed.fecha_detectada!=='null') {
+      aiBox.innerHTML=`<div class="ai-label">🤖 Fecha de caducidad detectada</div>
+        <div class="ai-field"><span class="ai-fl">Texto en imagen</span><span class="ai-fv">${parsed.texto_original||'—'}</span></div>
+        <div class="ai-field"><span class="ai-fl">Fecha interpretada</span><span class="ai-fv">${parsed.fecha_detectada}</span></div>
+        <div class="ai-field"><span class="ai-fl">Confianza</span><span class="ai-fv">${parsed.confianza||'—'}</span></div>
+        ${parsed.ubicacion_en_imagen?`<div class="ai-field"><span class="ai-fl">Localización en foto</span><span class="ai-fv">${parsed.ubicacion_en_imagen}</span></div>`:''}`;
+      dateInput.value = parsed.fecha_detectada;
+      ctx.textContent = `Texto leído: "${parsed.texto_original||''}" → Confianza: ${parsed.confianza||'—'}`;
+    } else {
+      aiBox.innerHTML=`<div class="ai-label">⚠️ Fecha no detectada automáticamente</div>
+        <p style="font-size:13px;color:var(--muted)">Introduce la fecha manualmente.</p>`;
+      dateInput.value='';
+    }
+    document.getElementById('date-confirm-22').style.display='block';
   }
 }
 
-// ── CHECKLIST ──────────────────────────────────────────
-function toggleCheck(el, key) {
+// ════════════════════════════════════════════════════════
+//  CHECKLIST
+// ════════════════════════════════════════════════════════
+function toggleCheck(el,key) {
   el.classList.toggle('checked');
   checklistItems[key] = el.classList.contains('checked');
 }
 
-// ── SECTION CONFIRM ────────────────────────────────────
+// ════════════════════════════════════════════════════════
+//  CONFIRMAR SECCIONES
+// ════════════════════════════════════════════════════════
 function confirmSection(sec) {
+  if (sec==='11') {
+    currentInspData.sec11 = {
+      empresa:  document.getElementById('name-11').value,
+      ubicacion:document.getElementById('loc-11').value,
+      obs:      document.getElementById('obs-11').value,
+      photo:    photos['11'][0]?.data||null
+    };
+  } else if (sec==='12') {
+    currentInspData.sec12 = {
+      empresas: document.getElementById('empresas-12').value,
+      obs:      document.getElementById('obs-12').value,
+      photo:    photos['12'][0]?.data||null
+    };
+  } else if (sec==='21') {
+    currentInspData.sec21 = {
+      checklist: { ...checklistItems },
+      otros:     document.getElementById('otros-texto').value,
+      aiObs:     currentInspData.aiObs21||''
+    };
+  }
   sectionsDone[sec] = true;
-  document.getElementById('sec-'+sec+'-done').style.display = 'block';
+  document.getElementById('sec-'+sec+'-done').style.display='block';
   updateProgress();
-  showToast('✅', 'Sección confirmada');
+  showToast('✅','Sección confirmada');
 }
-function editSection(sec) { /* allow editing */ }
 
 function checkExpiry() {
   const val = document.getElementById('date-22').value;
   if (!val) { showToast('⚠️','Introduce la fecha de caducidad'); return; }
   const chosen = new Date(val);
-  const today = new Date(); today.setHours(0,0,0,0);
+  const today  = new Date(); today.setHours(0,0,0,0);
+  currentInspData.sec22 = { fecha: chosen.toLocaleDateString('es-ES'), photo: photos['22'][0]?.data||null };
   const result = document.getElementById('expiry-result');
   if (chosen < today) {
-    result.innerHTML = `
-      <div class="date-alert">
-        <h4>🚨 BOTIQUÍN CADUCADO — PARALICE LOS TRABAJOS</h4>
-        <p>La fecha de caducidad (<strong>${chosen.toLocaleDateString('es-ES')}</strong>) es anterior a hoy. Debe paralizar los trabajos y reponer el botiquín antes de continuar.</p>
-      </div>`;
-    sectionsDone['22'] = true;
+    result.innerHTML=`<div class="date-alert">
+      <h4>🚨 BOTIQUÍN CADUCADO — PARALICE LOS TRABAJOS</h4>
+      <p>La fecha de caducidad <strong>(${chosen.toLocaleDateString('es-ES')})</strong> es anterior a hoy.<br>
+      Debe <strong>paralizar los trabajos de inmediato</strong> y reponer el botiquín antes de reanudar la actividad.</p>
+    </div>`;
     sectionsDone['22_alert'] = true;
   } else {
-    result.innerHTML = `
-      <div class="date-ok">
-        <h4>✅ Botiquín en vigor</h4>
-      </div>`;
-    sectionsDone['22'] = true;
+    result.innerHTML=`<div class="date-ok"><h4>✅ Botiquín en vigor hasta el ${chosen.toLocaleDateString('es-ES')}</h4></div>`;
   }
+  sectionsDone['22'] = true;
+  document.getElementById('sec-22-done').style.display='block';
   updateProgress();
 }
 
 function updateProgress() {
-  const total = 4;
-  const done = ['11','12','21','22'].filter(s => sectionsDone[s]).length;
-  const pct = Math.round((done/total)*100);
-  document.getElementById('insp-progress').style.width = pct+'%';
-  document.getElementById('progress-txt').textContent = done+'/'+total;
-  // Chapter status
-  const ch1done = sectionsDone['11'] && sectionsDone['12'];
-  const ch2done = sectionsDone['21'] && sectionsDone['22'];
-  styleChapter('ch1', ch1done);
-  styleChapter('ch2', ch2done);
-}
-function styleChapter(id, done) {
-  const num = document.getElementById(id+'-num');
-  num.classList.remove('done','active');
-  if (done) num.classList.add('done');
+  const done = ['11','12','21','22'].filter(s=>sectionsDone[s]).length;
+  document.getElementById('insp-progress').style.width = (done/4*100)+'%';
+  document.getElementById('progress-txt').textContent  = done+'/4';
+  if (sectionsDone['11']&&sectionsDone['12']) document.getElementById('ch1-num').classList.add('done');
+  if (sectionsDone['21']&&sectionsDone['22']) document.getElementById('ch2-num').classList.add('done');
 }
 
-// ── FINISH ─────────────────────────────────────────────
-function finishInspection() {
-  document.getElementById('modal-finish').classList.add('open');
-}
-function closeModal() {
-  document.getElementById('modal-finish').classList.remove('open');
-}
+// ════════════════════════════════════════════════════════
+//  FINALIZAR
+// ════════════════════════════════════════════════════════
+function finishInspection() { document.getElementById('modal-finish').classList.add('open'); }
+function closeModal(id)      { document.getElementById(id).classList.remove('open'); }
+
 function saveInspection() {
-  closeModal();
-  const hasAlert = !!sectionsDone['22_alert'];
-  completedInspections.unshift({
-    location: pendingInspection?.location || 'Sin nombre',
-    date: new Date().toLocaleDateString('es-ES'),
-    inspector: currentUser.name,
-    hasAlert
-  });
+  closeModal('modal-finish');
+  const report = {
+    location:      pendingInspection?.location||'Sin nombre',
+    date:          new Date().toLocaleDateString('es-ES'),
+    inspector:     currentUser.name,
+    hasAlert:      !!sectionsDone['22_alert'],
+    sectionsDone:  Object.keys(sectionsDone),
+    sec11:         currentInspData.sec11||null,
+    sec12:         currentInspData.sec12||null,
+    sec21:         currentInspData.sec21||null,
+    sec22:         currentInspData.sec22||null,
+  };
+  completedInspections.unshift(report);
   pendingInspection = null;
+  showToast('🏁','Inspección guardada. El administrador ya puede verla.');
   showDashboard();
-  showToast('🏁','Inspección guardada correctamente');
 }
 
-// ── TOAST ──────────────────────────────────────────────
+// ════════════════════════════════════════════════════════
+//  TOAST
+// ════════════════════════════════════════════════════════
 function showToast(icon, msg) {
   const t = document.getElementById('toast');
   document.getElementById('toast-icon').textContent = icon;
-  document.getElementById('toast-msg').textContent = msg;
+  document.getElementById('toast-msg').textContent  = msg;
   t.classList.add('show');
-  setTimeout(() => t.classList.remove('show'), 3000);
+  setTimeout(() => t.classList.remove('show'), 3500);
 }
 </script>
 </body>
