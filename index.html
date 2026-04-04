@@ -30,7 +30,6 @@
   }
   h1,h2,h3,h4 { font-family: 'Syne', sans-serif; }
 
-  /* ── GRID NOISE ── */
   body::before {
     content: '';
     position: fixed; inset: 0;
@@ -41,13 +40,10 @@
     pointer-events: none; z-index: 0;
   }
 
-  /* ── SCREENS ── */
   .screen { display: none; min-height: 100vh; position: relative; z-index: 1; }
   .screen.active { display: flex; flex-direction: column; }
 
-  /* ══════════════════════════════
-     LOGIN
-  ══════════════════════════════ */
+  /* LOGIN */
   #screen-login {
     align-items: center; justify-content: center;
     background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(249,115,22,.18) 0%, transparent 70%);
@@ -61,46 +57,28 @@
     box-shadow: 0 40px 80px rgba(0,0,0,.5);
   }
   .logo { display: flex; align-items: center; gap: 12px; margin-bottom: 32px; }
-  .logo-icon {
-    width: 44px; height: 44px;
-    background: var(--accent);
-    border-radius: 10px;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 22px;
-  }
+  .logo-icon { width: 44px; height: 44px; background: var(--accent); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 22px; }
   .logo h1 { font-size: 24px; font-weight: 800; letter-spacing: -0.5px; }
   .logo span { color: var(--accent); }
   .login-card h2 { font-size: 18px; margin-bottom: 8px; }
   .login-card p { color: var(--muted); font-size: 14px; margin-bottom: 28px; }
   label { display: block; font-size: 12px; font-weight: 500; color: var(--muted); margin-bottom: 6px; text-transform: uppercase; letter-spacing: .5px; }
   input[type=text], input[type=password], input[type=date], textarea, select {
-    width: 100%;
-    background: var(--surface2);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    color: var(--text);
-    padding: 12px 14px;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 15px;
-    outline: none;
-    transition: border-color .2s;
+    width: 100%; background: var(--surface2); border: 1px solid var(--border); border-radius: 8px;
+    color: var(--text); padding: 12px 14px; font-family: 'DM Sans', sans-serif; font-size: 15px;
+    outline: none; transition: border-color .2s;
   }
   input:focus, textarea:focus, select:focus { border-color: var(--accent); }
   .field { margin-bottom: 18px; }
   .btn {
     display: inline-flex; align-items: center; justify-content: center; gap: 8px;
-    padding: 13px 24px;
-    border-radius: 9px;
-    font-family: 'Syne', sans-serif;
-    font-weight: 700; font-size: 15px;
-    cursor: pointer; border: none; transition: all .2s;
-    text-decoration: none;
+    padding: 13px 24px; border-radius: 9px; font-family: 'Syne', sans-serif;
+    font-weight: 700; font-size: 15px; cursor: pointer; border: none; transition: all .2s;
   }
   .btn-primary { background: var(--accent); color: #fff; width: 100%; }
   .btn-primary:hover { background: var(--accent2); transform: translateY(-1px); box-shadow: 0 8px 24px rgba(249,115,22,.35); }
   .btn-outline { background: transparent; border: 1.5px solid var(--border); color: var(--text); }
   .btn-outline:hover { border-color: var(--accent); color: var(--accent); }
-  .btn-danger { background: var(--danger); color: #fff; }
   .btn-ok { background: var(--ok); color: #fff; }
   .btn-sm { padding: 8px 16px; font-size: 13px; }
   .login-demo { margin-top: 20px; padding-top: 20px; border-top: 1px solid var(--border); }
@@ -111,15 +89,11 @@
   .badge-inspector { background: rgba(34,197,94,.2); color: var(--ok); }
   .error-msg { background: rgba(239,68,68,.15); border: 1px solid rgba(239,68,68,.3); color: #fca5a5; border-radius: 8px; padding: 10px 14px; font-size: 14px; margin-bottom: 16px; display: none; }
 
-  /* ══════════════════════════════
-     APP SHELL
-  ══════════════════════════════ */
+  /* TOPBAR */
   #screen-app { background: var(--bg); }
   .topbar {
-    background: var(--surface);
-    border-bottom: 1px solid var(--border);
-    padding: 0 24px;
-    height: 60px;
+    background: var(--surface); border-bottom: 1px solid var(--border);
+    padding: 0 24px; height: 60px;
     display: flex; align-items: center; justify-content: space-between;
     position: sticky; top: 0; z-index: 100;
   }
@@ -135,20 +109,14 @@
   .user-role { font-size: 11px; color: var(--muted); }
 
   .app-content { padding: 32px 24px; max-width: 900px; margin: 0 auto; width: 100%; }
-
-  /* ══════════════════════════════
-     DASHBOARD
-  ══════════════════════════════ */
   .page-title { font-size: 28px; font-weight: 800; margin-bottom: 4px; }
   .page-sub { color: var(--muted); font-size: 14px; margin-bottom: 32px; }
 
-  /* Alert banner */
+  /* ALERT */
   .inspection-alert {
     background: linear-gradient(135deg, rgba(249,115,22,.15), rgba(249,115,22,.05));
-    border: 1.5px solid var(--accent);
-    border-radius: 16px;
-    padding: 24px 28px;
-    margin-bottom: 24px;
+    border: 1.5px solid var(--accent); border-radius: 16px;
+    padding: 24px 28px; margin-bottom: 24px;
     display: flex; align-items: center; justify-content: space-between; gap: 16px;
     animation: pulse-border 2.5s ease-in-out infinite;
   }
@@ -161,7 +129,6 @@
   .alert-text p { color: var(--muted); font-size: 13px; }
   .alert-text strong { color: var(--accent); }
 
-  /* Stats */
   .stats-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px,1fr)); gap: 16px; margin-bottom: 32px; }
   .stat-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; }
   .stat-num { font-family: 'Syne', sans-serif; font-size: 32px; font-weight: 800; }
@@ -170,29 +137,24 @@
   .stat-warn .stat-num { color: var(--warn); }
   .stat-accent .stat-num { color: var(--accent); }
 
-  /* Admin panel */
   .section-card { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 24px; margin-bottom: 20px; }
-  .section-card h3 { font-size: 16px; margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
+  .section-card h3 { font-size: 16px; margin-bottom: 16px; }
   .tag { display: inline-flex; align-items: center; gap: 4px; font-size: 11px; padding: 4px 10px; border-radius: 20px; font-weight: 600; }
-  .tag-pending { background: rgba(234,179,8,.15); color: var(--warn); }
   .tag-done { background: rgba(34,197,94,.15); color: var(--ok); }
   .tag-danger { background: rgba(239,68,68,.15); color: var(--danger); }
 
-  /* ══════════════════════════════
-     INSPECTION
-  ══════════════════════════════ */
-  .insp-header { display: flex; align-items: center; gap: 16px; margin-bottom: 32px; }
+  /* INSPECTION */
+  .insp-header { display: flex; align-items: center; gap: 16px; margin-bottom: 32px; flex-wrap: wrap; }
   .insp-header h2 { font-size: 22px; font-weight: 800; }
-  .progress-bar-wrap { background: var(--surface2); border-radius: 99px; height: 6px; flex: 1; }
+  .progress-bar-wrap { background: var(--surface2); border-radius: 99px; height: 6px; flex: 1; min-width: 100px; }
   .progress-bar { height: 100%; border-radius: 99px; background: var(--accent); transition: width .4s ease; }
   .progress-label { font-size: 12px; color: var(--muted); flex-shrink: 0; }
 
   .chapters { display: flex; flex-direction: column; gap: 12px; }
   .chapter { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; overflow: hidden; }
   .chapter-header { display: flex; align-items: center; gap: 16px; padding: 18px 20px; cursor: pointer; user-select: none; }
-  .ch-num { width: 36px; height: 36px; border-radius: 8px; background: var(--surface2); display: flex; align-items: center; justify-content: center; font-family: 'Syne', sans-serif; font-weight: 700; font-size: 14px; flex-shrink: 0; }
+  .ch-num { width: 36px; height: 36px; border-radius: 8px; background: var(--surface2); display: flex; align-items: center; justify-content: center; font-family: 'Syne', sans-serif; font-weight: 700; font-size: 14px; flex-shrink: 0; transition: all .3s; }
   .ch-num.done { background: rgba(34,197,94,.2); color: var(--ok); }
-  .ch-num.active { background: rgba(249,115,22,.2); color: var(--accent); }
   .ch-title { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 15px; flex: 1; }
   .ch-chevron { color: var(--muted); transition: transform .3s; }
   .chapter.open .ch-chevron { transform: rotate(180deg); }
@@ -203,18 +165,12 @@
   .subcap-title { font-weight: 600; font-size: 14px; margin-bottom: 14px; display: flex; align-items: center; gap: 8px; }
   .subcap-num { color: var(--accent); font-family: 'Syne', sans-serif; }
 
-  /* Photo upload */
   .upload-zone {
-    border: 2px dashed var(--border);
-    border-radius: 10px;
-    padding: 28px;
-    text-align: center;
-    cursor: pointer;
-    transition: all .2s;
-    position: relative;
+    border: 2px dashed var(--border); border-radius: 10px; padding: 28px;
+    text-align: center; cursor: pointer; transition: all .2s; position: relative;
   }
   .upload-zone:hover { border-color: var(--accent); background: rgba(249,115,22,.04); }
-  .upload-zone input[type=file] { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; }
+  .upload-zone input[type=file] { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%; }
   .upload-icon { font-size: 32px; margin-bottom: 8px; }
   .upload-zone p { color: var(--muted); font-size: 13px; }
   .upload-zone strong { color: var(--accent); }
@@ -222,10 +178,24 @@
   .photo-thumb { position: relative; border-radius: 8px; overflow: hidden; aspect-ratio: 4/3; background: var(--surface); }
   .photo-thumb img { width: 100%; height: 100%; object-fit: cover; }
   .photo-thumb .del-btn { position: absolute; top: 6px; right: 6px; background: rgba(0,0,0,.7); border: none; border-radius: 50%; width: 24px; height: 24px; color: #fff; cursor: pointer; font-size: 12px; display: flex; align-items: center; justify-content: center; }
-  .ai-result { background: rgba(249,115,22,.08); border: 1px solid rgba(249,115,22,.25); border-radius: 10px; padding: 14px 16px; margin-top: 12px; font-size: 13px; }
-  .ai-result .ai-label { font-size: 11px; text-transform: uppercase; letter-spacing: .5px; color: var(--accent); font-weight: 600; margin-bottom: 6px; display: flex; align-items: center; gap: 6px; }
+
+  /* AI result box */
+  .ai-result {
+    background: rgba(249,115,22,.08); border: 1px solid rgba(249,115,22,.25);
+    border-radius: 10px; padding: 14px 16px; margin-top: 12px; font-size: 13px;
+    line-height: 1.6;
+  }
+  .ai-label { font-size: 11px; text-transform: uppercase; letter-spacing: .5px; color: var(--accent); font-weight: 600; margin-bottom: 8px; display: flex; align-items: center; gap: 6px; }
   .ai-spinner { display: inline-block; width: 10px; height: 10px; border: 2px solid var(--accent); border-top-color: transparent; border-radius: 50%; animation: spin .6s linear infinite; }
   @keyframes spin { to { transform: rotate(360deg); } }
+  .ai-field { display: flex; flex-direction: column; gap: 2px; margin-bottom: 6px; }
+  .ai-field-label { font-size: 10px; text-transform: uppercase; color: var(--muted); letter-spacing: .4px; }
+  .ai-field-val { color: var(--text); font-weight: 500; }
+  .ai-error { color: #fca5a5; }
+
+  /* Confirm block */
+  .confirm-block { background: rgba(255,255,255,.03); border: 1px solid var(--border); border-radius: 10px; padding: 16px; margin-top: 12px; }
+  .confirm-block h4 { font-size: 13px; margin-bottom: 12px; color: var(--muted); }
 
   /* Checklist */
   .checklist { display: flex; flex-direction: column; gap: 8px; }
@@ -235,16 +205,16 @@
   .check-box { width: 20px; height: 20px; border-radius: 5px; border: 2px solid var(--border); flex-shrink: 0; display: flex; align-items: center; justify-content: center; transition: all .2s; }
   .check-item.checked .check-box { background: var(--ok); border-color: var(--ok); }
   .check-item.checked .check-box::after { content: '✓'; font-size: 12px; color: #fff; font-weight: 700; }
-  .check-label { font-size: 14px; }
 
-  /* Date alert */
+  /* Expiry */
   .date-alert { background: rgba(239,68,68,.12); border: 1.5px solid var(--danger); border-radius: 10px; padding: 16px; margin-top: 12px; }
   .date-alert h4 { color: var(--danger); font-size: 15px; margin-bottom: 6px; display: flex; align-items: center; gap: 8px; }
-  .date-alert p { font-size: 13px; color: #fca5a5; }
+  .date-alert p { font-size: 13px; color: #fca5a5; line-height: 1.5; }
   .date-ok { background: rgba(34,197,94,.1); border: 1.5px solid var(--ok); border-radius: 10px; padding: 16px; margin-top: 12px; }
   .date-ok h4 { color: var(--ok); font-size: 15px; display: flex; align-items: center; gap: 8px; }
 
   .confirm-row { display: flex; gap: 10px; margin-top: 14px; flex-wrap: wrap; }
+  .done-badge { display: none; color: var(--ok); font-size: 13px; margin-top: 8px; font-weight: 500; }
   .nav-row { display: flex; justify-content: space-between; align-items: center; margin-top: 28px; }
 
   /* Modal */
@@ -256,28 +226,21 @@
   .modal-btns { display: flex; gap: 12px; justify-content: flex-end; }
 
   /* Toast */
-  .toast { position: fixed; bottom: 24px; right: 24px; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 14px 20px; font-size: 14px; display: none; z-index: 999; align-items: center; gap: 10px; box-shadow: 0 16px 40px rgba(0,0,0,.4); animation: slide-in .3s ease; }
-  .toast.show { display: flex; }
+  .toast { position: fixed; bottom: 24px; right: 24px; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 14px 20px; font-size: 14px; display: none; z-index: 999; align-items: center; gap: 10px; box-shadow: 0 16px 40px rgba(0,0,0,.4); }
+  .toast.show { display: flex; animation: slide-in .3s ease; }
   @keyframes slide-in { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
 
-  /* Responsive */
   @media (max-width: 600px) {
     .app-content { padding: 16px; }
     .photos-grid { grid-template-columns: repeat(2,1fr); }
     .inspection-alert { flex-direction: column; }
+    .login-card { padding: 32px 24px; }
   }
-
-  .text-muted { color: var(--muted); }
-  .mt-8 { margin-top: 8px; }
-  .mt-12 { margin-top: 12px; }
-  .mt-16 { margin-top: 16px; }
-  hr { border: none; border-top: 1px solid var(--border); margin: 16px 0; }
-  .w-full { width: 100%; }
 </style>
 </head>
 <body>
 
-<!-- ══════════ LOGIN ══════════ -->
+<!-- ══ LOGIN ══ -->
 <div id="screen-login" class="screen active">
   <div class="login-card">
     <div class="logo">
@@ -310,7 +273,7 @@
   </div>
 </div>
 
-<!-- ══════════ APP ══════════ -->
+<!-- ══ APP ══ -->
 <div id="screen-app" class="screen">
   <nav class="topbar">
     <div class="topbar-logo">
@@ -319,21 +282,21 @@
     </div>
     <div class="user-pill">
       <div>
-        <div class="user-name" id="nav-name">-</div>
-        <div class="user-role" id="nav-role">-</div>
+        <div class="user-name" id="nav-name"></div>
+        <div class="user-role" id="nav-role"></div>
       </div>
-      <div class="avatar" id="nav-avatar">-</div>
+      <div class="avatar" id="nav-avatar"></div>
       <button class="btn btn-outline btn-sm" onclick="doLogout()">Salir</button>
     </div>
   </nav>
 
   <div class="app-content">
+
     <!-- DASHBOARD -->
     <div id="view-dashboard">
       <h1 class="page-title" id="dash-title">Panel principal</h1>
-      <p class="page-sub" id="dash-sub">Bienvenido al sistema de inspecciones</p>
+      <p class="page-sub" id="dash-sub"></p>
 
-      <!-- Alert inspección pendiente -->
       <div id="inspection-pending-alert" class="inspection-alert" style="display:none;">
         <div class="alert-icon">⚠️</div>
         <div class="alert-text">
@@ -344,42 +307,25 @@
       </div>
 
       <div class="stats-row">
-        <div class="stat-card stat-ok">
-          <div class="stat-num" id="stat-done">0</div>
-          <div class="stat-label">Inspecciones completadas</div>
-        </div>
-        <div class="stat-card stat-warn">
-          <div class="stat-num" id="stat-pending">0</div>
-          <div class="stat-label">Pendientes</div>
-        </div>
-        <div class="stat-card stat-accent">
-          <div class="stat-num" id="stat-alerts">0</div>
-          <div class="stat-label">Alertas activas</div>
-        </div>
+        <div class="stat-card stat-ok"><div class="stat-num" id="stat-done">0</div><div class="stat-label">Completadas</div></div>
+        <div class="stat-card stat-warn"><div class="stat-num" id="stat-pending">0</div><div class="stat-label">Pendientes</div></div>
+        <div class="stat-card" style="--c:var(--danger)"><div class="stat-num" id="stat-alerts" style="color:var(--danger)">0</div><div class="stat-label">Alertas activas</div></div>
       </div>
 
-      <!-- Admin: solicitar inspección -->
       <div id="admin-panel" class="section-card" style="display:none;">
-        <h3>⚙️ Panel Administrador</h3>
-        <div class="field">
-          <label>Nombre de la instalación</label>
-          <input type="text" id="inp-location" placeholder="Ej: Nave Industrial A3 – Polígono Norte" />
-        </div>
-        <div class="field">
-          <label>Asignar inspector</label>
+        <h3>⚙️ Solicitar inspección</h3>
+        <div class="field"><label>Nombre de la instalación</label><input type="text" id="inp-location" placeholder="Ej: Nave Industrial A3 – Polígono Norte" /></div>
+        <div class="field"><label>Asignar inspector</label>
           <select id="inp-inspector">
-            <option value="inspector1">inspector1 — Carlos Rodríguez</option>
+            <option value="inspector1">Carlos Rodríguez (inspector1)</option>
           </select>
         </div>
-        <button class="btn btn-primary" style="width:auto;" onclick="requestInspection()">📋 Solicitar nueva inspección</button>
+        <button class="btn btn-primary" style="width:auto;" onclick="requestInspection()">📋 Solicitar inspección</button>
       </div>
 
-      <!-- Historial -->
       <div class="section-card">
-        <h3>📁 Historial de inspecciones</h3>
-        <div id="history-list">
-          <p style="color:var(--muted);font-size:14px;">No hay inspecciones registradas aún.</p>
-        </div>
+        <h3>📁 Historial</h3>
+        <div id="history-list"><p style="color:var(--muted);font-size:14px;">No hay inspecciones registradas.</p></div>
       </div>
     </div>
 
@@ -387,14 +333,15 @@
     <div id="view-inspection" style="display:none;">
       <div class="insp-header">
         <button class="btn btn-outline btn-sm" onclick="goBack()">← Volver</button>
-        <h2>🔍 Inspección de seguridad</h2>
+        <h2>🔍 Inspección</h2>
         <div class="progress-bar-wrap"><div class="progress-bar" id="insp-progress" style="width:0%"></div></div>
         <span class="progress-label" id="progress-txt">0/4</span>
       </div>
       <p style="color:var(--muted);font-size:13px;margin-bottom:20px;">📍 <span id="insp-location-label">-</span></p>
 
       <div class="chapters">
-        <!-- CAPÍTULO 1 -->
+
+        <!-- CAP 1 -->
         <div class="chapter" id="ch1">
           <div class="chapter-header" onclick="toggleChapter('ch1')">
             <div class="ch-num" id="ch1-num">1</div>
@@ -402,49 +349,56 @@
             <span class="ch-chevron">▼</span>
           </div>
           <div class="chapter-body">
+
             <!-- 1.1 -->
             <div class="subcapitulo">
               <div class="subcap-title"><span class="subcap-num">1.1</span> Adhesión Plan PRL</div>
-              <div class="upload-zone" id="zone-11">
+              <div class="upload-zone">
                 <div class="upload-icon">📄</div>
                 <p>Sube foto de la <strong>portada del Plan PRL</strong></p>
-                <p style="margin-top:4px;font-size:12px;">La IA leerá la ubicación y nombre de la instalación</p>
+                <p style="margin-top:4px;font-size:11px;color:var(--muted)">La IA leerá empresa, ubicación y fecha del documento</p>
                 <input type="file" accept="image/*" onchange="handlePhoto(event,'11')">
               </div>
               <div id="photos-11" class="photos-grid"></div>
               <div id="ai-11" class="ai-result" style="display:none;"></div>
-              <div id="confirm-11" style="display:none;" class="mt-12">
-                <p style="font-size:13px;margin-bottom:8px;">IA detectada — confirma los datos:</p>
-                <div class="field"><label>Ubicación detectada</label><input type="text" id="loc-11" /></div>
-                <div class="field"><label>Nombre instalación</label><input type="text" id="name-11" /></div>
+              <div id="confirm-11" class="confirm-block" style="display:none;">
+                <h4>📝 Confirma o corrige los datos extraídos por la IA:</h4>
+                <div class="field"><label>Empresa / Instalación</label><input type="text" id="name-11" placeholder="Nombre de la empresa…"/></div>
+                <div class="field"><label>Ubicación / Dirección</label><input type="text" id="loc-11" placeholder="Dirección de la instalación…"/></div>
+                <div class="field"><label>Observaciones</label><input type="text" id="obs-11" placeholder="Fecha del plan, revisión, etc."/></div>
                 <div class="confirm-row">
-                  <button class="btn btn-ok btn-sm" onclick="confirmSection('11')">✓ Confirmar</button>
-                  <button class="btn btn-outline btn-sm" onclick="editSection('11')">✏️ Editar</button>
+                  <button class="btn btn-ok btn-sm" onclick="confirmSection('11')">✓ Confirmar datos</button>
                 </div>
-                <div id="sec-11-done" style="display:none;color:var(--ok);font-size:13px;margin-top:8px;">✅ Sección confirmada</div>
+                <div id="sec-11-done" class="done-badge">✅ Sección 1.1 confirmada</div>
               </div>
             </div>
+
             <!-- 1.2 -->
             <div class="subcapitulo">
               <div class="subcap-title"><span class="subcap-num">1.2</span> Libro de Subcontratación</div>
-              <div class="upload-zone" id="zone-12">
+              <div class="upload-zone">
                 <div class="upload-icon">📋</div>
                 <p>Sube foto de la <strong>hoja de empresas subcontratadas</strong></p>
+                <p style="margin-top:4px;font-size:11px;color:var(--muted)">La IA leerá las empresas y datos del registro</p>
                 <input type="file" accept="image/*" onchange="handlePhoto(event,'12')">
               </div>
               <div id="photos-12" class="photos-grid"></div>
               <div id="ai-12" class="ai-result" style="display:none;"></div>
-              <div id="confirm-12" style="display:none;margin-top:12px;">
+              <div id="confirm-12" class="confirm-block" style="display:none;">
+                <h4>📝 Empresas detectadas — confirma el registro:</h4>
+                <div class="field"><label>Empresas subcontratadas</label><textarea id="empresas-12" rows="3" placeholder="Lista de empresas…"></textarea></div>
+                <div class="field"><label>Observaciones</label><input type="text" id="obs-12" placeholder="Otros datos del libro…"/></div>
                 <div class="confirm-row">
-                  <button class="btn btn-ok btn-sm" onclick="confirmSection('12')">✓ Documento verificado</button>
+                  <button class="btn btn-ok btn-sm" onclick="confirmSection('12')">✓ Confirmar registro</button>
                 </div>
-                <div id="sec-12-done" style="display:none;color:var(--ok);font-size:13px;margin-top:8px;">✅ Sección confirmada</div>
+                <div id="sec-12-done" class="done-badge">✅ Sección 1.2 confirmada</div>
               </div>
             </div>
+
           </div>
         </div>
 
-        <!-- CAPÍTULO 2 -->
+        <!-- CAP 2 -->
         <div class="chapter" id="ch2">
           <div class="chapter-header" onclick="toggleChapter('ch2')">
             <div class="ch-num" id="ch2-num">2</div>
@@ -452,65 +406,76 @@
             <span class="ch-chevron">▼</span>
           </div>
           <div class="chapter-body">
+
             <!-- 2.1 -->
             <div class="subcapitulo">
               <div class="subcap-title"><span class="subcap-num">2.1</span> Inspección General</div>
               <div class="upload-zone" id="zone-21">
                 <div class="upload-icon">🏥</div>
                 <p>Sube hasta <strong>3 fotografías del botiquín</strong></p>
+                <p style="margin-top:4px;font-size:11px;color:var(--muted)">La IA identificará los elementos presentes</p>
                 <input type="file" accept="image/*" multiple onchange="handleMultiPhoto(event,'21')">
               </div>
               <div id="photos-21" class="photos-grid"></div>
               <div id="ai-21" class="ai-result" style="display:none;"></div>
               <div id="checklist-21" style="display:none;">
-                <p style="font-size:13px;margin:14px 0 10px;">Confirma el contenido del botiquín:</p>
+                <p style="font-size:13px;margin:14px 0 10px;font-weight:500;">Confirma el contenido del botiquín:</p>
                 <div class="checklist">
-                  <div class="check-item" onclick="toggleCheck(this,'tijeras')"><div class="check-box"></div><span class="check-label">✂️ Tijeras</span></div>
-                  <div class="check-item" onclick="toggleCheck(this,'vendas')"><div class="check-box"></div><span class="check-label">🩹 Vendas</span></div>
-                  <div class="check-item" onclick="toggleCheck(this,'tiritas')"><div class="check-box"></div><span class="check-label">🩺 Tiritas</span></div>
-                  <div class="check-item" onclick="toggleCheck(this,'gasas')"><div class="check-box"></div><span class="check-label">🫧 Gasas</span></div>
-                  <div class="check-item" onclick="toggleCheck(this,'agua_ox')"><div class="check-box"></div><span class="check-label">💧 Agua oxigenada</span></div>
-                  <div class="check-item" id="check-otros"><div class="check-box" onclick="toggleCheck(document.getElementById('check-otros'),'otros')"></div><span class="check-label">📦 Otros:</span> <input type="text" id="otros-texto" style="flex:1;background:transparent;border:none;border-bottom:1px solid var(--border);padding:4px;font-size:13px;color:var(--text);outline:none;" placeholder="especificar…" /></div>
+                  <div class="check-item" onclick="toggleCheck(this,'tijeras')"><div class="check-box"></div><span>✂️ Tijeras</span></div>
+                  <div class="check-item" onclick="toggleCheck(this,'vendas')"><div class="check-box"></div><span>🩹 Vendas</span></div>
+                  <div class="check-item" onclick="toggleCheck(this,'tiritas')"><div class="check-box"></div><span>🩺 Tiritas / Apósitos</span></div>
+                  <div class="check-item" onclick="toggleCheck(this,'gasas')"><div class="check-box"></div><span>🫧 Gasas</span></div>
+                  <div class="check-item" onclick="toggleCheck(this,'agua_ox')"><div class="check-box"></div><span>💧 Agua oxigenada</span></div>
+                  <div class="check-item" id="check-otros">
+                    <div class="check-box" onclick="event.stopPropagation();toggleCheck(document.getElementById('check-otros'),'otros')"></div>
+                    <span>📦 Otros:</span>
+                    <input type="text" id="otros-texto" onclick="event.stopPropagation()" style="flex:1;background:transparent;border:none;border-bottom:1px solid var(--border);padding:4px;font-size:13px;color:var(--text);outline:none;" placeholder="especificar…" />
+                  </div>
                 </div>
-                <button class="btn btn-ok btn-sm mt-12" onclick="confirmSection('21')">✓ Confirmar checklist</button>
-                <div id="sec-21-done" style="display:none;color:var(--ok);font-size:13px;margin-top:8px;">✅ Sección confirmada</div>
+                <div class="confirm-row">
+                  <button class="btn btn-ok btn-sm" onclick="confirmSection('21')">✓ Confirmar checklist</button>
+                </div>
+                <div id="sec-21-done" class="done-badge">✅ Sección 2.1 confirmada</div>
               </div>
             </div>
+
             <!-- 2.2 -->
             <div class="subcapitulo">
               <div class="subcap-title"><span class="subcap-num">2.2</span> Caducidad del botiquín</div>
-              <div class="upload-zone" id="zone-22">
+              <div class="upload-zone">
                 <div class="upload-icon">📅</div>
-                <p>Sube foto de la <strong>fecha de caducidad</strong> del botiquín</p>
-                <p style="margin-top:4px;font-size:12px;">La IA leerá la fecha automáticamente</p>
+                <p>Sube foto de la <strong>etiqueta de caducidad</strong> del botiquín</p>
+                <p style="margin-top:4px;font-size:11px;color:var(--muted)">La IA leerá la fecha automáticamente</p>
                 <input type="file" accept="image/*" onchange="handlePhoto(event,'22')">
               </div>
               <div id="photos-22" class="photos-grid"></div>
               <div id="ai-22" class="ai-result" style="display:none;"></div>
-              <div id="date-confirm-22" style="display:none;margin-top:14px;">
-                <div class="field">
-                  <label>Fecha detectada — confirma o modifica</label>
-                  <input type="date" id="date-22" />
-                </div>
+              <div id="date-confirm-22" class="confirm-block" style="display:none;">
+                <h4>📅 Confirma o corrige la fecha de caducidad:</h4>
+                <div class="field"><label>Fecha detectada</label><input type="date" id="date-22" /></div>
+                <div id="ai-date-context" style="font-size:12px;color:var(--muted);margin-top:-10px;margin-bottom:12px;"></div>
                 <div class="confirm-row">
                   <button class="btn btn-primary btn-sm" onclick="checkExpiry()">Comprobar fecha →</button>
                 </div>
                 <div id="expiry-result"></div>
+                <div id="sec-22-done" class="done-badge">✅ Sección 2.2 confirmada</div>
               </div>
             </div>
+
           </div>
         </div>
-      </div><!-- /chapters -->
+      </div>
 
       <div class="nav-row">
         <button class="btn btn-outline" onclick="goBack()">← Cancelar</button>
-        <button class="btn btn-primary" onclick="finishInspection()">Finalizar inspección ✓</button>
+        <button class="btn btn-ok" onclick="finishInspection()">Finalizar inspección ✓</button>
       </div>
     </div>
-  </div><!-- /app-content -->
+
+  </div>
 </div>
 
-<!-- ══════════ MODAL ══════════ -->
+<!-- MODAL -->
 <div class="modal-overlay" id="modal-finish">
   <div class="modal">
     <h3>🏁 ¿Finalizar inspección?</h3>
@@ -522,30 +487,24 @@
   </div>
 </div>
 
-<!-- ══════════ TOAST ══════════ -->
+<!-- TOAST -->
 <div class="toast" id="toast">
   <span id="toast-icon">✅</span>
-  <span id="toast-msg">-</span>
+  <span id="toast-msg"></span>
 </div>
 
 <script>
-// ── USERS ──────────────────────────────────────────────
+// ════════════════════════════
+//  USERS
+// ════════════════════════════
 const USERS = {
-  admin: {
-    password: 'admin123',
-    name: 'Admin Pérez',
-    role: 'Administrador',
-    type: 'admin'
-  },
-  inspector1: {
-    password: 'insp2024',
-    name: 'Carlos Rodríguez',
-    role: 'Inspector de seguridad',
-    type: 'inspector'
-  }
+  admin: { password:'admin123', name:'Admin Pérez', role:'Administrador', type:'admin' },
+  inspector1: { password:'insp2024', name:'Carlos Rodríguez', role:'Inspector de seguridad', type:'inspector' }
 };
 
-// ── STATE ──────────────────────────────────────────────
+// ════════════════════════════
+//  STATE
+// ════════════════════════════
 let currentUser = null;
 let pendingInspection = null;
 let completedInspections = [];
@@ -553,35 +512,36 @@ let sectionsDone = {};
 let photos = { '11':[], '12':[], '21':[], '22':[] };
 let checklistItems = {};
 
-// ── AUTH ───────────────────────────────────────────────
+// ════════════════════════════
+//  AUTH
+// ════════════════════════════
 function doLogin() {
   const u = document.getElementById('inp-user').value.trim();
   const p = document.getElementById('inp-pass').value;
+  const err = document.getElementById('login-error');
   if (USERS[u] && USERS[u].password === p) {
-    currentUser = { username: u, ...USERS[u] };
-    document.getElementById('login-error').style.display = 'none';
+    currentUser = { username:u, ...USERS[u] };
+    err.style.display = 'none';
     launchApp();
   } else {
-    document.getElementById('login-error').style.display = 'block';
+    err.style.display = 'block';
   }
 }
-function quickLogin(u, p) {
+function quickLogin(u,p) {
   document.getElementById('inp-user').value = u;
   document.getElementById('inp-pass').value = p;
   doLogin();
 }
-function doLogout() {
-  currentUser = null;
-  showScreen('login');
-}
-document.getElementById('inp-pass').addEventListener('keydown', e => { if (e.key==='Enter') doLogin(); });
+function doLogout() { currentUser=null; showScreen('login'); }
+document.getElementById('inp-pass').addEventListener('keydown', e=>{ if(e.key==='Enter') doLogin(); });
 
-// ── SCREENS ────────────────────────────────────────────
+// ════════════════════════════
+//  SCREENS
+// ════════════════════════════
 function showScreen(name) {
-  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
   document.getElementById('screen-'+name).classList.add('active');
 }
-
 function launchApp() {
   showScreen('app');
   const av = document.getElementById('nav-avatar');
@@ -592,314 +552,310 @@ function launchApp() {
   showDashboard();
 }
 
-// ── DASHBOARD ──────────────────────────────────────────
+// ════════════════════════════
+//  DASHBOARD
+// ════════════════════════════
 function showDashboard() {
-  document.getElementById('view-dashboard').style.display = 'block';
-  document.getElementById('view-inspection').style.display = 'none';
+  document.getElementById('view-dashboard').style.display='block';
+  document.getElementById('view-inspection').style.display='none';
   renderDashboard();
 }
 function renderDashboard() {
-  const isAdmin = currentUser.type === 'admin';
+  const isAdmin = currentUser.type==='admin';
   document.getElementById('dash-title').textContent = isAdmin ? 'Panel de administración' : 'Mis inspecciones';
-  document.getElementById('dash-sub').textContent = isAdmin
-    ? 'Gestiona y solicita inspecciones de seguridad'
-    : `Bienvenido, ${currentUser.name}`;
+  document.getElementById('dash-sub').textContent = isAdmin ? 'Gestiona y solicita inspecciones de seguridad' : `Bienvenido, ${currentUser.name}`;
   document.getElementById('admin-panel').style.display = isAdmin ? 'block' : 'none';
-
-  // Alert
+  const showAlert = pendingInspection && (isAdmin || pendingInspection.assignedTo===currentUser.username);
   const alert = document.getElementById('inspection-pending-alert');
-  if (pendingInspection && (isAdmin || pendingInspection.assignedTo === currentUser.username)) {
-    alert.style.display = 'flex';
+  alert.style.display = showAlert ? 'flex' : 'none';
+  if (showAlert) {
     document.getElementById('alert-location').textContent = pendingInspection.location;
     document.getElementById('alert-by').textContent = pendingInspection.requestedBy;
-  } else {
-    alert.style.display = 'none';
   }
-
-  // Stats
   document.getElementById('stat-done').textContent = completedInspections.length;
   document.getElementById('stat-pending').textContent = pendingInspection ? 1 : 0;
-  const alerts = completedInspections.filter(i => i.hasAlert).length;
-  document.getElementById('stat-alerts').textContent = alerts;
-
-  // History
+  document.getElementById('stat-alerts').textContent = completedInspections.filter(i=>i.hasAlert).length;
   const list = document.getElementById('history-list');
-  if (completedInspections.length === 0) {
-    list.innerHTML = '<p style="color:var(--muted);font-size:14px;">No hay inspecciones registradas aún.</p>';
+  if (!completedInspections.length) {
+    list.innerHTML='<p style="color:var(--muted);font-size:14px;">No hay inspecciones registradas.</p>';
   } else {
-    list.innerHTML = completedInspections.map(i => `
+    list.innerHTML = completedInspections.map(i=>`
       <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 16px;background:var(--surface2);border-radius:8px;margin-bottom:8px;">
-        <div>
-          <div style="font-weight:600;font-size:14px;">${i.location}</div>
-          <div style="font-size:12px;color:var(--muted);">${i.date} · ${i.inspector}</div>
-        </div>
-        <span class="tag ${i.hasAlert ? 'tag-danger' : 'tag-done'}">${i.hasAlert ? '⚠️ Alerta' : '✅ OK'}</span>
-      </div>
-    `).join('');
+        <div><div style="font-weight:600;font-size:14px;">${i.location}</div><div style="font-size:12px;color:var(--muted);">${i.date} · ${i.inspector}</div></div>
+        <span class="tag ${i.hasAlert?'tag-danger':'tag-done'}">${i.hasAlert?'⚠️ Botiquín caducado':'✅ Sin alertas'}</span>
+      </div>`).join('');
   }
 }
-
 function requestInspection() {
   const loc = document.getElementById('inp-location').value.trim();
   if (!loc) { showToast('⚠️','Introduce el nombre de la instalación'); return; }
-  pendingInspection = {
-    location: loc,
-    assignedTo: document.getElementById('inp-inspector').value,
-    requestedBy: currentUser.name,
-    date: new Date().toLocaleDateString('es-ES')
-  };
-  document.getElementById('inp-location').value = '';
+  pendingInspection = { location:loc, assignedTo:document.getElementById('inp-inspector').value, requestedBy:currentUser.name };
+  document.getElementById('inp-location').value='';
   renderDashboard();
   showToast('📋','Inspección solicitada correctamente');
 }
 
-// ── INSPECTION ─────────────────────────────────────────
+// ════════════════════════════
+//  INSPECTION
+// ════════════════════════════
 function startInspection() {
-  // Reset state
-  sectionsDone = {};
-  photos = { '11':[], '12':[], '21':[], '22':[] };
-  checklistItems = {};
-  document.querySelectorAll('.ai-result').forEach(el => { el.style.display='none'; el.innerHTML=''; });
-  document.querySelectorAll('[id^=confirm-],[id^=date-confirm-],[id^=checklist-]').forEach(el => el.style.display='none');
-  document.querySelectorAll('[id^=sec-][id$=-done]').forEach(el => el.style.display='none');
-  document.querySelectorAll('[id^=photos-]').forEach(el => el.innerHTML='');
+  sectionsDone={}; photos={'11':[],'12':[],'21':[],'22':[]}; checklistItems={};
+  document.querySelectorAll('.ai-result').forEach(el=>{el.style.display='none';el.innerHTML='';});
+  document.querySelectorAll('.confirm-block').forEach(el=>el.style.display='none');
+  document.getElementById('checklist-21').style.display='none';
   document.getElementById('expiry-result').innerHTML='';
-  document.querySelectorAll('.chapter').forEach(c => c.classList.remove('open'));
-  document.querySelectorAll('.ch-num').forEach(n => { n.classList.remove('done','active'); });
-  updateProgress();
-
-  document.getElementById('view-dashboard').style.display = 'none';
-  document.getElementById('view-inspection').style.display = 'block';
-  document.getElementById('insp-location-label').textContent = pendingInspection
-    ? pendingInspection.location
-    : 'Sin asignar';
+  document.getElementById('ai-date-context').textContent='';
+  document.querySelectorAll('.done-badge').forEach(el=>el.style.display='none');
+  document.querySelectorAll('.photos-grid').forEach(el=>el.innerHTML='');
+  document.querySelectorAll('.chapter').forEach(c=>c.classList.remove('open'));
+  document.querySelectorAll('.ch-num').forEach(n=>n.classList.remove('done'));
+  document.getElementById('insp-progress').style.width='0%';
+  document.getElementById('progress-txt').textContent='0/4';
+  document.getElementById('insp-location-label').textContent = pendingInspection?.location||'—';
+  document.getElementById('view-dashboard').style.display='none';
+  document.getElementById('view-inspection').style.display='block';
 }
 function goBack() { showDashboard(); }
-function toggleChapter(id) {
-  const ch = document.getElementById(id);
-  ch.classList.toggle('open');
-}
+function toggleChapter(id) { document.getElementById(id).classList.toggle('open'); }
 
-// ── PHOTO HANDLING ─────────────────────────────────────
-function handlePhoto(e, sec) {
-  const file = e.target.files[0];
-  if (!file) return;
-  addPhoto(file, sec);
+// ════════════════════════════
+//  PHOTOS
+// ════════════════════════════
+function handlePhoto(e,sec) {
+  const file=e.target.files[0]; if(!file) return;
+  addPhoto(file,sec);
 }
-function handleMultiPhoto(e, sec) {
-  const files = Array.from(e.target.files).slice(0, 3 - photos[sec].length);
-  files.forEach(f => addPhoto(f, sec));
+function handleMultiPhoto(e,sec) {
+  const max=3-photos[sec].length;
+  Array.from(e.target.files).slice(0,max).forEach(f=>addPhoto(f,sec));
 }
-function addPhoto(file, sec) {
-  const reader = new FileReader();
-  reader.onload = ev => {
-    photos[sec].push({ name: file.name, data: ev.target.result });
+function addPhoto(file,sec) {
+  const reader=new FileReader();
+  reader.onload=ev=>{
+    photos[sec].push({name:file.name,data:ev.target.result,type:file.type});
     renderPhotos(sec);
-    analyzePhoto(ev.target.result, sec);
+    analyzePhoto(ev.target.result,file.type,sec);
   };
   reader.readAsDataURL(file);
 }
 function renderPhotos(sec) {
-  const grid = document.getElementById('photos-'+sec);
-  grid.innerHTML = photos[sec].map((p,i) => `
+  document.getElementById('photos-'+sec).innerHTML=photos[sec].map((p,i)=>`
     <div class="photo-thumb">
       <img src="${p.data}" alt="Foto ${i+1}">
       <button class="del-btn" onclick="removePhoto(${i},'${sec}')">✕</button>
-    </div>
-  `).join('');
-  if (sec === '21') {
-    const zone = document.getElementById('zone-21');
-    if (photos['21'].length >= 3) zone.style.opacity = '0.4';
-    else zone.style.opacity = '1';
-  }
+    </div>`).join('');
+  if(sec==='21') document.getElementById('zone-21').style.opacity=photos['21'].length>=3?'0.4':'1';
 }
-function removePhoto(idx, sec) {
-  photos[sec].splice(idx,1);
-  renderPhotos(sec);
-}
+function removePhoto(idx,sec) { photos[sec].splice(idx,1); renderPhotos(sec); }
 
-// ── AI ANALYSIS ────────────────────────────────────────
-async function analyzePhoto(dataUrl, sec) {
-  const aiBox = document.getElementById('ai-'+sec);
-  aiBox.style.display = 'block';
-  aiBox.innerHTML = `<div class="ai-label"><div class="ai-spinner"></div> Analizando imagen con IA…</div>`;
+// ════════════════════════════
+//  AI ANALYSIS  ← calls /api/analyze on the server
+// ════════════════════════════
+async function analyzePhoto(dataUrl, mimeType, sec) {
+  const aiBox=document.getElementById('ai-'+sec);
+  aiBox.style.display='block';
+  aiBox.innerHTML=`<div class="ai-label"><div class="ai-spinner"></div> Analizando imagen con IA Claude…</div>`;
 
-  const base64 = dataUrl.split(',')[1];
-  const mediaType = dataUrl.split(';')[0].split(':')[1];
-
-  let prompt = '';
-  if (sec === '11') prompt = 'Eres un asistente de inspección de seguridad laboral. Analiza esta imagen del Plan de Prevención de Riesgos Laborales (PRL). Extrae: 1) El nombre de la empresa o instalación que aparece en el documento, 2) La ubicación o dirección si es visible. Responde en JSON con campos: empresa, ubicacion, observaciones. Sé conciso.';
-  else if (sec === '12') prompt = 'Eres un asistente de inspección. Analiza esta imagen del Libro de Subcontratación. Lista brevemente las empresas o datos que puedas ver. Responde en JSON con campos: empresas (array de strings), observaciones.';
-  else if (sec === '21') prompt = 'Eres un asistente de inspección de seguridad. Analiza esta imagen de un botiquín de primeros auxilios. Identifica qué elementos son visibles: tijeras, vendas, tiritas, gasas, agua oxigenada, u otros. Responde en JSON con campos: elementos_visibles (array), elementos_faltantes (array), observaciones.';
-  else if (sec === '22') prompt = 'Eres un asistente de inspección. Analiza esta imagen y extrae la fecha de caducidad visible (del botiquín o medicamento). Responde SOLO en JSON con campos: fecha_detectada (formato YYYY-MM-DD o null si no visible), texto_original, confianza (alta/media/baja).';
+  const base64=dataUrl.split(',')[1];
 
   try {
-    const resp = await fetch('https://api.anthropic.com/v1/messages', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        model: 'claude-sonnet-4-20250514',
-        max_tokens: 1000,
-        messages: [{
-          role: 'user',
-          content: [{
-            type: 'image',
-            source: { type: 'base64', media_type: mediaType, data: base64 }
-          }, {
-            type: 'text',
-            text: prompt
-          }]
-        }]
-      })
+    const resp=await fetch('/api/analyze',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({imageBase64:base64, mediaType:mimeType, section:sec})
     });
-    const data = await resp.json();
-    const text = data.content?.map(b => b.text||'').join('') || '';
-    let parsed;
+
+    if(!resp.ok) {
+      const err=await resp.json().catch(()=>({}));
+      throw new Error(err.error||`HTTP ${resp.status}`);
+    }
+
+    const data=await resp.json();
+    // Extract text from Anthropic response
+    const rawText=(data.content||[]).map(b=>b.text||'').join('').trim();
+    let parsed=null;
     try {
-      const clean = text.replace(/```json|```/g,'').trim();
-      parsed = JSON.parse(clean);
-    } catch { parsed = null; }
-    renderAIResult(sec, text, parsed);
+      const clean=rawText.replace(/```json\s*/gi,'').replace(/```\s*/g,'').trim();
+      parsed=JSON.parse(clean);
+    } catch(_) { parsed=null; }
+
+    renderAIResult(sec,rawText,parsed);
+
   } catch(err) {
-    aiBox.innerHTML = `<div class="ai-label">⚠️ IA no disponible — introduce datos manualmente</div>`;
-    renderAIResult(sec, null, null);
+    console.error('analyzePhoto error:',err);
+    aiBox.innerHTML=`<div class="ai-label">⚠️ Error de conexión con la IA</div>
+      <p class="ai-error">Detalle: ${err.message}</p>
+      <p style="margin-top:6px;font-size:12px;color:var(--muted)">Asegúrate de que ANTHROPIC_API_KEY está configurada en Railway. Puedes rellenar los campos manualmente.</p>`;
+    // Show confirm blocks anyway so user can fill manually
+    openManualFallback(sec);
   }
 }
 
-function renderAIResult(sec, rawText, parsed) {
-  const aiBox = document.getElementById('ai-'+sec);
-  if (sec === '11') {
-    aiBox.innerHTML = `<div class="ai-label">🤖 Análisis IA — Plan PRL</div>`;
-    if (parsed) {
-      aiBox.innerHTML += `<p><strong>Empresa/Instalación:</strong> ${parsed.empresa||'—'}</p><p><strong>Ubicación:</strong> ${parsed.ubicacion||'—'}</p>`;
-      if (parsed.observaciones) aiBox.innerHTML += `<p style="color:var(--muted);margin-top:4px;font-size:12px;">${parsed.observaciones}</p>`;
-      document.getElementById('loc-11').value = parsed.ubicacion||'';
-      document.getElementById('name-11').value = parsed.empresa||'';
+function openManualFallback(sec) {
+  if(sec==='11') document.getElementById('confirm-11').style.display='block';
+  else if(sec==='12') document.getElementById('confirm-12').style.display='block';
+  else if(sec==='22') document.getElementById('date-confirm-22').style.display='block';
+  else if(sec==='21' && photos['21'].length>0) document.getElementById('checklist-21').style.display='block';
+}
+
+function renderAIResult(sec,raw,parsed) {
+  const aiBox=document.getElementById('ai-'+sec);
+
+  if(sec==='11') {
+    if(parsed && (parsed.empresa||parsed.ubicacion)) {
+      aiBox.innerHTML=`
+        <div class="ai-label">🤖 IA — Plan PRL analizado</div>
+        <div class="ai-field"><span class="ai-field-label">Empresa / Instalación</span><span class="ai-field-val">${parsed.empresa||'No detectado'}</span></div>
+        <div class="ai-field"><span class="ai-field-label">Ubicación</span><span class="ai-field-val">${parsed.ubicacion||'No detectado'}</span></div>
+        ${parsed.observaciones?`<div class="ai-field"><span class="ai-field-label">Observaciones</span><span class="ai-field-val">${parsed.observaciones}</span></div>`:''}`;
+      document.getElementById('name-11').value=parsed.empresa||'';
+      document.getElementById('loc-11').value=parsed.ubicacion||'';
+      document.getElementById('obs-11').value=parsed.observaciones||'';
     } else {
-      aiBox.innerHTML += `<p style="color:var(--muted);">No se pudo extraer datos automáticamente. Rellena los campos manualmente.</p>`;
+      aiBox.innerHTML=`<div class="ai-label">⚠️ IA — Datos parcialmente detectados</div>
+        <p style="color:var(--muted);font-size:13px;">La imagen no es suficientemente clara o no contiene los datos esperados. Rellena manualmente los campos de abajo.</p>`;
     }
-    document.getElementById('confirm-11').style.display = 'block';
+    document.getElementById('confirm-11').style.display='block';
   }
-  else if (sec === '12') {
-    aiBox.innerHTML = `<div class="ai-label">🤖 Análisis IA — Libro Subcontratación</div>`;
-    if (parsed && parsed.empresas) {
-      aiBox.innerHTML += `<p><strong>Empresas detectadas:</strong> ${parsed.empresas.join(', ')||'—'}</p>`;
-      if (parsed.observaciones) aiBox.innerHTML += `<p style="color:var(--muted);font-size:12px;margin-top:4px;">${parsed.observaciones}</p>`;
+
+  else if(sec==='12') {
+    if(parsed) {
+      const empresas=(parsed.empresas||[]).join('\n');
+      aiBox.innerHTML=`
+        <div class="ai-label">🤖 IA — Libro de Subcontratación analizado</div>
+        ${parsed.empresas?.length?`<div class="ai-field"><span class="ai-field-label">Empresas detectadas (${parsed.empresas.length})</span><span class="ai-field-val">${parsed.empresas.join(' · ')}</span></div>`:''}
+        ${parsed.cifs?.length?`<div class="ai-field"><span class="ai-field-label">CIFs</span><span class="ai-field-val">${parsed.cifs.join(' · ')}</span></div>`:''}
+        ${parsed.fechas?.length?`<div class="ai-field"><span class="ai-field-label">Fechas</span><span class="ai-field-val">${parsed.fechas.join(' · ')}</span></div>`:''}
+        ${parsed.observaciones?`<div class="ai-field"><span class="ai-field-label">Observaciones</span><span class="ai-field-val">${parsed.observaciones}</span></div>`:''}`;
+      document.getElementById('empresas-12').value=empresas||parsed.observaciones||'';
+      document.getElementById('obs-12').value=(parsed.cifs?.join(', ')||'')+' '+(parsed.fechas?.join(', ')||'');
     } else {
-      aiBox.innerHTML += `<p style="color:var(--muted);">Documento capturado. Verifica visualmente.</p>`;
+      aiBox.innerHTML=`<div class="ai-label">⚠️ IA — Imagen procesada</div>
+        <p style="font-size:13px;color:var(--muted);">Verifica visualmente el documento y confirma los datos manualmente.</p>`;
     }
-    document.getElementById('confirm-12').style.display = 'block';
+    document.getElementById('confirm-12').style.display='block';
   }
-  else if (sec === '21') {
-    aiBox.innerHTML = `<div class="ai-label">🤖 Análisis IA — Contenido botiquín</div>`;
-    if (parsed) {
-      if (parsed.elementos_visibles?.length) aiBox.innerHTML += `<p>✅ <strong>Detectado:</strong> ${parsed.elementos_visibles.join(', ')}</p>`;
-      if (parsed.elementos_faltantes?.length) aiBox.innerHTML += `<p>⚠️ <strong>No visibles:</strong> ${parsed.elementos_faltantes.join(', ')}</p>`;
-      if (parsed.observaciones) aiBox.innerHTML += `<p style="color:var(--muted);font-size:12px;margin-top:4px;">${parsed.observaciones}</p>`;
+
+  else if(sec==='21') {
+    if(parsed) {
+      aiBox.innerHTML=`
+        <div class="ai-label">🤖 IA — Contenido botiquín analizado</div>
+        ${parsed.elementos_visibles?.length?`<div class="ai-field"><span class="ai-field-label">✅ Detectado</span><span class="ai-field-val">${parsed.elementos_visibles.join(', ')}</span></div>`:''}
+        ${parsed.elementos_faltantes?.length?`<div class="ai-field"><span class="ai-field-label">⚠️ No visibles</span><span class="ai-field-val" style="color:var(--warn)">${parsed.elementos_faltantes.join(', ')}</span></div>`:''}
+        ${parsed.estado_general?`<div class="ai-field"><span class="ai-field-label">Estado general</span><span class="ai-field-val">${parsed.estado_general}</span></div>`:''}
+        ${parsed.observaciones?`<div class="ai-field"><span class="ai-field-label">Observaciones</span><span class="ai-field-val">${parsed.observaciones}</span></div>`:''}`;
+      // Pre-check items the AI detected
+      if(parsed.elementos_visibles) {
+        const map={tijeras:'tijeras',vendas:'vendas',tiritas:'tiritas',apósitos:'tiritas',gasas:'gasas','agua oxigenada':'agua_ox'};
+        parsed.elementos_visibles.forEach(el=>{
+          const key=map[el.toLowerCase()];
+          if(key){
+            const item=document.querySelector(`.check-item[onclick*="${key}"]`);
+            if(item&&!item.classList.contains('checked')) item.click();
+          }
+        });
+      }
     } else {
-      aiBox.innerHTML += `<p style="color:var(--muted);">Imágenes cargadas. Completa el checklist.</p>`;
+      aiBox.innerHTML=`<div class="ai-label">⚠️ IA — Imagen procesada</div>
+        <p style="font-size:13px;color:var(--muted);">Completa el checklist manualmente.</p>`;
     }
-    if (photos['21'].length > 0) document.getElementById('checklist-21').style.display = 'block';
+    document.getElementById('checklist-21').style.display='block';
   }
-  else if (sec === '22') {
-    aiBox.innerHTML = `<div class="ai-label">🤖 Análisis IA — Fecha de caducidad</div>`;
-    const dateInput = document.getElementById('date-22');
-    if (parsed?.fecha_detectada) {
-      aiBox.innerHTML += `<p>📅 <strong>Fecha detectada:</strong> ${parsed.texto_original||parsed.fecha_detectada} (confianza: ${parsed.confianza||'media'})</p>`;
-      dateInput.value = parsed.fecha_detectada;
+
+  else if(sec==='22') {
+    const dateInput=document.getElementById('date-22');
+    const ctx=document.getElementById('ai-date-context');
+    if(parsed?.fecha_detectada) {
+      aiBox.innerHTML=`
+        <div class="ai-label">🤖 IA — Fecha de caducidad detectada</div>
+        <div class="ai-field"><span class="ai-field-label">Texto original en la imagen</span><span class="ai-field-val">${parsed.texto_original||parsed.fecha_detectada}</span></div>
+        <div class="ai-field"><span class="ai-field-label">Fecha interpretada</span><span class="ai-field-val">${parsed.fecha_detectada}</span></div>
+        <div class="ai-field"><span class="ai-field-label">Ubicación en imagen</span><span class="ai-field-val">${parsed.ubicacion_en_imagen||'—'}</span></div>
+        <div class="ai-field"><span class="ai-field-label">Confianza de lectura</span><span class="ai-field-val">${parsed.confianza||'—'}</span></div>`;
+      dateInput.value=parsed.fecha_detectada;
+      ctx.textContent=`Texto detectado en imagen: "${parsed.texto_original||''}" → Confianza: ${parsed.confianza||'—'}`;
     } else {
-      aiBox.innerHTML += `<p style="color:var(--muted);">No se detectó fecha automáticamente. Introdúcela manualmente.</p>`;
-      dateInput.value = '';
+      aiBox.innerHTML=`<div class="ai-label">⚠️ IA — Fecha no detectada automáticamente</div>
+        <p style="font-size:13px;color:var(--muted);">No se pudo leer la fecha en la imagen. Por favor, introdúcela manualmente en el campo de abajo.</p>`;
+      dateInput.value='';
     }
-    document.getElementById('date-confirm-22').style.display = 'block';
+    document.getElementById('date-confirm-22').style.display='block';
   }
 }
 
-// ── CHECKLIST ──────────────────────────────────────────
-function toggleCheck(el, key) {
+// ════════════════════════════
+//  CHECKLIST
+// ════════════════════════════
+function toggleCheck(el,key) {
   el.classList.toggle('checked');
-  checklistItems[key] = el.classList.contains('checked');
+  checklistItems[key]=el.classList.contains('checked');
 }
 
-// ── SECTION CONFIRM ────────────────────────────────────
+// ════════════════════════════
+//  CONFIRM SECTION
+// ════════════════════════════
 function confirmSection(sec) {
-  sectionsDone[sec] = true;
-  document.getElementById('sec-'+sec+'-done').style.display = 'block';
+  sectionsDone[sec]=true;
+  document.getElementById('sec-'+sec+'-done').style.display='block';
   updateProgress();
-  showToast('✅', 'Sección confirmada');
+  showToast('✅','Sección confirmada correctamente');
 }
-function editSection(sec) { /* allow editing */ }
 
 function checkExpiry() {
-  const val = document.getElementById('date-22').value;
-  if (!val) { showToast('⚠️','Introduce la fecha de caducidad'); return; }
-  const chosen = new Date(val);
-  const today = new Date(); today.setHours(0,0,0,0);
-  const result = document.getElementById('expiry-result');
-  if (chosen < today) {
-    result.innerHTML = `
-      <div class="date-alert">
-        <h4>🚨 BOTIQUÍN CADUCADO — PARALICE LOS TRABAJOS</h4>
-        <p>La fecha de caducidad (<strong>${chosen.toLocaleDateString('es-ES')}</strong>) es anterior a hoy. Debe paralizar los trabajos y reponer el botiquín antes de continuar.</p>
-      </div>`;
-    sectionsDone['22'] = true;
-    sectionsDone['22_alert'] = true;
+  const val=document.getElementById('date-22').value;
+  if(!val){showToast('⚠️','Introduce la fecha de caducidad');return;}
+  const chosen=new Date(val);
+  const today=new Date(); today.setHours(0,0,0,0);
+  const result=document.getElementById('expiry-result');
+  if(chosen<today){
+    result.innerHTML=`<div class="date-alert">
+      <h4>🚨 BOTIQUÍN CADUCADO — PARALICE LOS TRABAJOS</h4>
+      <p>La fecha de caducidad <strong>(${chosen.toLocaleDateString('es-ES')})</strong> es anterior a la fecha actual. Debe <strong>paralizar los trabajos de inmediato</strong> y reponer el botiquín antes de reanudar la actividad.</p>
+    </div>`;
+    sectionsDone['22_alert']=true;
   } else {
-    result.innerHTML = `
-      <div class="date-ok">
-        <h4>✅ Botiquín en vigor</h4>
-      </div>`;
-    sectionsDone['22'] = true;
+    result.innerHTML=`<div class="date-ok"><h4>✅ Botiquín en vigor hasta el ${chosen.toLocaleDateString('es-ES')}</h4></div>`;
   }
+  sectionsDone['22']=true;
+  document.getElementById('sec-22-done').style.display='block';
   updateProgress();
 }
 
 function updateProgress() {
-  const total = 4;
-  const done = ['11','12','21','22'].filter(s => sectionsDone[s]).length;
-  const pct = Math.round((done/total)*100);
-  document.getElementById('insp-progress').style.width = pct+'%';
-  document.getElementById('progress-txt').textContent = done+'/'+total;
-  // Chapter status
-  const ch1done = sectionsDone['11'] && sectionsDone['12'];
-  const ch2done = sectionsDone['21'] && sectionsDone['22'];
-  styleChapter('ch1', ch1done);
-  styleChapter('ch2', ch2done);
-}
-function styleChapter(id, done) {
-  const num = document.getElementById(id+'-num');
-  num.classList.remove('done','active');
-  if (done) num.classList.add('done');
+  const done=['11','12','21','22'].filter(s=>sectionsDone[s]).length;
+  document.getElementById('insp-progress').style.width=Math.round(done/4*100)+'%';
+  document.getElementById('progress-txt').textContent=done+'/4';
+  if(sectionsDone['11']&&sectionsDone['12']) document.getElementById('ch1-num').classList.add('done');
+  if(sectionsDone['21']&&sectionsDone['22']) document.getElementById('ch2-num').classList.add('done');
 }
 
-// ── FINISH ─────────────────────────────────────────────
-function finishInspection() {
-  document.getElementById('modal-finish').classList.add('open');
-}
-function closeModal() {
-  document.getElementById('modal-finish').classList.remove('open');
-}
-function saveInspection() {
+// ════════════════════════════
+//  FINISH
+// ════════════════════════════
+function finishInspection(){ document.getElementById('modal-finish').classList.add('open'); }
+function closeModal(){ document.getElementById('modal-finish').classList.remove('open'); }
+function saveInspection(){
   closeModal();
-  const hasAlert = !!sectionsDone['22_alert'];
   completedInspections.unshift({
-    location: pendingInspection?.location || 'Sin nombre',
-    date: new Date().toLocaleDateString('es-ES'),
-    inspector: currentUser.name,
-    hasAlert
+    location:pendingInspection?.location||'Sin nombre',
+    date:new Date().toLocaleDateString('es-ES'),
+    inspector:currentUser.name,
+    hasAlert:!!sectionsDone['22_alert']
   });
-  pendingInspection = null;
+  pendingInspection=null;
   showDashboard();
   showToast('🏁','Inspección guardada correctamente');
 }
 
-// ── TOAST ──────────────────────────────────────────────
-function showToast(icon, msg) {
-  const t = document.getElementById('toast');
-  document.getElementById('toast-icon').textContent = icon;
-  document.getElementById('toast-msg').textContent = msg;
+// ════════════════════════════
+//  TOAST
+// ════════════════════════════
+function showToast(icon,msg){
+  const t=document.getElementById('toast');
+  document.getElementById('toast-icon').textContent=icon;
+  document.getElementById('toast-msg').textContent=msg;
   t.classList.add('show');
-  setTimeout(() => t.classList.remove('show'), 3000);
+  setTimeout(()=>t.classList.remove('show'),3500);
 }
 </script>
 </body>

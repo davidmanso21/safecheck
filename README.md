@@ -1,83 +1,6 @@
-# 🛡️ SafeCheck — Sistema de Inspecciones de Seguridad Laboral
+# 🛡️ SafeCheck — Inspecciones de Seguridad Laboral
 
-Aplicación web para la gestión y realización de inspecciones de seguridad laboral con análisis de fotografías mediante IA (Claude/Copilot).
-
----
-
-## 🚀 Despliegue en Railway
-
-### Paso 1 — Subir a GitHub
-
-```bash
-git init
-git add .
-git commit -m "feat: SafeCheck initial release"
-git branch -M main
-git remote add origin https://github.com/TU_USUARIO/safecheck.git
-git push -u origin main
-```
-
-### Paso 2 — Conectar con Railway
-
-1. Ve a [railway.app](https://railway.app) e inicia sesión con GitHub
-2. Haz clic en **New Project → Deploy from GitHub repo**
-3. Selecciona el repositorio `safecheck`
-4. Railway detectará automáticamente el `Procfile` y desplegará la app
-5. Ve a **Settings → Domains** → genera un dominio público
-
-### Paso 3 — Variables de entorno
-
-En Railway → Variables, añade:
-```
-PORT=3000
-NODE_ENV=production
-```
-
----
-
-## 👥 Usuarios del sistema
-
-| Usuario      | Contraseña | Rol           | Permisos                              |
-|-------------|------------|---------------|---------------------------------------|
-| `admin`     | `admin123` | Administrador | Solicitar inspecciones, ver historial |
-| `inspector1`| `insp2024` | Inspector     | Realizar inspecciones asignadas       |
-
----
-
-## 📋 Estructura de la inspección
-
-```
-Inspección de seguridad
-├── 1 - Revisión de documentación
-│   ├── 1.1 Adhesión Plan PRL (foto + extracción IA)
-│   └── 1.2 Libro de Subcontratación (foto + verificación)
-└── 2 - Botiquín
-    ├── 2.1 Inspección General (hasta 3 fotos + checklist)
-    └── 2.2 Caducidad (foto + lectura de fecha con IA)
-```
-
----
-
-## 🤖 Integración con IA (Claude/Copilot)
-
-La app usa la API de Anthropic (Claude Sonnet) para:
-
-- **Sección 1.1**: Lee el nombre de empresa y ubicación del Plan PRL
-- **Sección 1.2**: Lista empresas del Libro de Subcontratación
-- **Sección 2.1**: Identifica elementos presentes en el botiquín
-- **Sección 2.2**: Extrae la fecha de caducidad de la fotografía
-
-### Configurar clave de API
-
-Añade en Railway → Variables:
-```
-ANTHROPIC_API_KEY=sk-ant-...
-```
-
-O crea un archivo `.env` local (no subir a GitHub):
-```
-ANTHROPIC_API_KEY=sk-ant-...
-```
+App web de inspecciones PRL con análisis de imágenes mediante IA (Anthropic Claude).
 
 ---
 
@@ -85,28 +8,151 @@ ANTHROPIC_API_KEY=sk-ant-...
 
 ```
 safecheck/
-├── index.html          ← Aplicación principal
-├── server.js           ← Servidor Node.js (Railway)
-├── package.json        ← Dependencias
-├── Procfile            ← Instrucción de arranque Railway
-├── .gitignore          ← Exclusiones Git
-└── README.md           ← Esta documentación
+├── public/
+│   └── index.html       ← Aplicación frontend completa
+├── server.js            ← Servidor Node.js + proxy hacia Anthropic API
+├── package.json
+├── Procfile             ← Instrucción de arranque para Railway
+├── .gitignore
+└── README.md
 ```
 
 ---
 
-## ⚠️ Alertas del sistema
+## 👥 Usuarios
 
-La app genera alertas automáticas cuando:
-- La fecha de caducidad del botiquín es **anterior a la fecha actual**
-- En ese caso se muestra: **"PARALICE LOS TRABAJOS"** hasta reponer el botiquín
+| Usuario      | Contraseña | Rol           |
+|-------------|------------|---------------|
+| `admin`     | `admin123` | Administrador |
+| `inspector1`| `insp2024` | Inspector (Carlos Rodríguez) |
 
 ---
 
-## 🔧 Desarrollo local
+## 🚀 Paso 1 — Subir a GitHub
+
+### 1.1 Crear repositorio en GitHub
+1. Ve a [github.com/new](https://github.com/new)
+2. Nombre: `safecheck`
+3. Privado o público (según prefieras)
+4. **NO** marques "Add README" (ya lo tienes)
+5. Haz clic en **Create repository**
+
+### 1.2 Subir los archivos desde tu ordenador
 
 ```bash
-npm install
-npm start
+# En la carpeta del proyecto:
+git init
+git add .
+git commit -m "feat: SafeCheck v2 con proxy Anthropic"
+git branch -M main
+git remote add origin https://github.com/TU_USUARIO/safecheck.git
+git push -u origin main
+```
+
+---
+
+## 🚂 Paso 2 — Desplegar en Railway
+
+### 2.1 Crear el proyecto en Railway
+
+1. Ve a [railway.app](https://railway.app) e inicia sesión con tu cuenta de GitHub
+2. Haz clic en **New Project**
+3. Selecciona **Deploy from GitHub repo**
+4. Elige el repositorio `safecheck`
+5. Railway detectará el `Procfile` automáticamente y comenzará el despliegue
+
+### 2.2 Generar dominio público
+
+1. En tu proyecto de Railway, ve a la pestaña **Settings**
+2. En la sección **Networking** → **Public Networking**
+3. Haz clic en **Generate Domain**
+4. Railway te dará una URL del tipo: `safecheck-production.up.railway.app`
+
+---
+
+## 🔑 Paso 3 — Configurar la API de Anthropic (CLAVE)
+
+> ⚠️ **SIN ESTE PASO EL ANÁLISIS DE IA NO FUNCIONARÁ**
+
+### 3.1 Obtener la clave de API de Anthropic
+
+1. Ve a [console.anthropic.com](https://console.anthropic.com)
+2. Inicia sesión o crea una cuenta
+3. En el menú lateral ve a **API Keys**
+4. Haz clic en **Create Key**
+5. Dale un nombre: `safecheck-railway`
+6. **Copia la clave** — empieza por `sk-ant-api03-...`
+   > ⚠️ Guárdala bien, Anthropic solo te la muestra UNA VEZ
+
+### 3.2 Añadir la clave en Railway
+
+1. En tu proyecto de Railway, haz clic en el servicio `safecheck`
+2. Ve a la pestaña **Variables**
+3. Haz clic en **New Variable**
+4. Rellena así:
+
+   | Campo | Valor |
+   |-------|-------|
+   | **NAME** | `ANTHROPIC_API_KEY` |
+   | **VALUE** | `sk-ant-api03-XXXXXXXXX` (tu clave) |
+
+5. Haz clic en **Add** → Railway reiniciará el servidor automáticamente
+
+### 3.3 Verificar que funciona
+
+En Railway → tu servicio → pestaña **Logs**, deberías ver:
+```
+✅ SafeCheck corriendo en http://localhost:XXXX
+🤖 API de Anthropic configurada correctamente
+```
+
+Si ves `⚠️ ANTHROPIC_API_KEY no definida` → la variable no se guardó correctamente.
+
+---
+
+## 🔄 Actualizar la aplicación
+
+Cuando hagas cambios en el código:
+
+```bash
+git add .
+git commit -m "fix: descripción del cambio"
+git push origin main
+```
+
+Railway detectará el push y redespllegará automáticamente.
+
+---
+
+## 🧪 Desarrollo local
+
+Crea un archivo `.env` en la raíz (NO lo subas a GitHub):
+```
+ANTHROPIC_API_KEY=sk-ant-api03-XXXXXXXXX
+```
+
+Luego instala `dotenv` y úsalo, o simplemente:
+
+```bash
+ANTHROPIC_API_KEY=sk-ant-... node server.js
 # → http://localhost:3000
 ```
+
+---
+
+## 🤖 Qué hace la IA en cada sección
+
+| Sección | Análisis |
+|---------|----------|
+| **1.1 Plan PRL** | Lee empresa, dirección y fecha del documento |
+| **1.2 Subcontratación** | Extrae nombres de empresas, CIFs y fechas |
+| **2.1 Botiquín** | Identifica elementos presentes y faltantes |
+| **2.2 Caducidad** | Lee la fecha de caducidad → alerta si está vencida |
+
+---
+
+## ⚠️ Alertas automáticas
+
+- Si la fecha de caducidad del botiquín es **anterior a hoy** →
+  aparece: **"BOTIQUÍN CADUCADO — PARALICE LOS TRABAJOS"**
+- La inspección queda marcada con alerta en el historial del administrador
