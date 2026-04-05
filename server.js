@@ -317,11 +317,11 @@ input:focus,textarea:focus,select:focus{border-color:var(--acc)}
               <div id="cl21" style="display:none">
                 <p style="font-size:13px;margin:14px 0 10px;font-weight:500">Confirma el contenido del botiqu&#237;n:</p>
                 <div class="cklist">
-                  <div class="cki" onclick="togCk(this,'tijeras')"><div class="ckb"></div><span>&#9986;&#65039; Tijeras</span></div>
-                  <div class="cki" onclick="togCk(this,'vendas')"><div class="ckb"></div><span>&#129321; Vendas</span></div>
-                  <div class="cki" onclick="togCk(this,'tiritas')"><div class="ckb"></div><span>&#129706; Tiritas / Ap&#243;sitos</span></div>
-                  <div class="cki" onclick="togCk(this,'gasas')"><div class="ckb"></div><span>&#129511; Gasas</span></div>
-                  <div class="cki" onclick="togCk(this,'agua_ox')"><div class="ckb"></div><span>&#128167; Agua oxigenada</span></div>
+                  <div class="cki" data-key="tijeras" onclick="togCk(this,'tijeras')"><div class="ckb"></div><span>&#9986;&#65039; Tijeras</span></div>
+                  <div class="cki" data-key="vendas" onclick="togCk(this,'vendas')"><div class="ckb"></div><span>&#129321; Vendas</span></div>
+                  <div class="cki" data-key="tiritas" onclick="togCk(this,'tiritas')"><div class="ckb"></div><span>&#129706; Tiritas / Ap&#243;sitos</span></div>
+                  <div class="cki" data-key="gasas" onclick="togCk(this,'gasas')"><div class="ckb"></div><span>&#129511; Gasas</span></div>
+                  <div class="cki" data-key="agua_ox" onclick="togCk(this,'agua_ox')"><div class="ckb"></div><span>&#128167; Agua oxigenada</span></div>
                   <div class="cki" id="ck_otros">
                     <div class="ckb" onclick="event.stopPropagation();togCk(document.getElementById('ck_otros'),'otros')"></div>
                     <span>&#128230; Otros:</span>
@@ -574,7 +574,7 @@ function addPhoto(f,s){
   r.readAsDataURL(f);
 }
 function renderPg(s){
-  document.getElementById('pg'+s).innerHTML=PHOTOS[s].map((p,i)=>'<div class="pthumb"><img src="'+p.data+'"><button class="delbtn" onclick="delPh('+i+',\\''+s+'\\')">&#10005;</button></div>').join('');
+  document.getElementById('pg'+s).innerHTML=PHOTOS[s].map((p,i)=>'<div class="pthumb"><img src="'+p.data+'"><button class="delbtn" onclick="delPh('+i+',&#39;'+s+'&#39;)">&#10005;</button></div>').join('');
   if(s==='21')document.getElementById('z21').style.opacity=PHOTOS['21'].length>=3?'0.4':'1';
 }
 function delPh(i,s){PHOTOS[s].splice(i,1);renderPg(s);}
@@ -622,7 +622,7 @@ function renderAI(s,p){
   else if(s==='21'){
     box.innerHTML='<div class="ailbl">🤖 Contenido botiqu\xedn analizado</div>'+(p?''+(p.elementos_visibles?.length?'<div class="aif"><span class="aifl">\u2705 Detectados</span><span class="aifv">'+p.elementos_visibles.join(', ')+'</span></div>':'')+(p.elementos_faltantes?.length?'<div class="aif"><span class="aifl">\u26a0\ufe0f No visibles</span><span class="aifv" style="color:var(--warn)">'+p.elementos_faltantes.join(', ')+'</span></div>':'')+(p.estado_general?'<div class="aif"><span class="aifl">Estado</span><span class="aifv">'+p.estado_general+'</span></div>':'')+(p.observaciones?'<div class="aif"><span class="aifl">Observaciones</span><span class="aifv">'+p.observaciones+'</span></div>':''):'<p style="color:var(--mut);font-size:13px">Completa el checklist manualmente.</p>');
     CID.aiObs21=p?.observaciones||'';
-    if(p?.elementos_visibles){const m={tijeras:'tijeras',vendas:'vendas',tiritas:'tiritas','ap\xf3sitos':'tiritas',gasas:'gasas','agua oxigenada':'agua_ox'};p.elementos_visibles.forEach(el=>{const k=m[el.toLowerCase().trim()];if(k){const it=document.querySelector('.cki[onclick*="\\\''+k+'\\\'"]');if(it&&!it.classList.contains('on'))it.click();}});}
+    if(p?.elementos_visibles){const m={tijeras:'tijeras',vendas:'vendas',tiritas:'tiritas','ap\xf3sitos':'tiritas',gasas:'gasas','agua oxigenada':'agua_ox'};p.elementos_visibles.forEach(el=>{const k=m[el.toLowerCase().trim()];if(k){const it=document.querySelector('.cki[data-key="'+k+'"]');if(it&&!it.classList.contains('on'))it.click();}});}
     if(PHOTOS['21'].length>0)document.getElementById('cl21').style.display='block';
   }
   else if(s==='22'){
