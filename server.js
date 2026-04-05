@@ -458,14 +458,14 @@ function reqInsp(){
   const loc=document.getElementById('iloc').value.trim();
   if(!loc){toast('\u26a0\ufe0f','Introduce el nombre de la instalaci\xf3n');return;}
   PI={loc,to:document.getElementById('iinsp').value,by:U.name};
-  document.getElementById('iloc').value='';renderDash();toast('\U0001f4cb','Inspecci\xf3n solicitada');
+  document.getElementById('iloc').value='';renderDash();toast('📋','Inspecci\xf3n solicitada');
 }
 
 // ── INFORMES ─────────────────────────────────────────
 function renderRep(){
   const list=document.getElementById('replist');
   if(!INSP.length){list.innerHTML='<p style="color:var(--mut);font-size:14px">No hay informes a\xfan.</p>';return;}
-  list.innerHTML=INSP.map((r,i)=>'<div class="rrow"><div class="rinfo"><div class="rtitle">\U0001f4c4 '+r.loc+'</div><div class="rmeta">'+r.date+' \xb7 Inspector: '+r.insp+' \xb7 '+r.nSec+'/4 secciones</div></div><div class="racts"><span class="tag '+(r.alert?'tdan':'tok')+'">'+(r.alert?'\u26a0\ufe0f ALERTA':'\u2705 OK')+'</span><button class="btn bsec bsm" onclick="viewRep('+i+')">\U0001f441 Ver</button><button class="btn bpdf bsm" onclick="dlPDF('+i+')">\u2b07 PDF</button></div></div>').join('');
+  list.innerHTML=INSP.map((r,i)=>'<div class="rrow"><div class="rinfo"><div class="rtitle">📄 '+r.loc+'</div><div class="rmeta">'+r.date+' \xb7 Inspector: '+r.insp+' \xb7 '+r.nSec+'/4 secciones</div></div><div class="racts"><span class="tag '+(r.alert?'tdan':'tok')+'">'+(r.alert?'\u26a0\ufe0f ALERTA':'\u2705 OK')+'</span><button class="btn bsec bsm" onclick="viewRep('+i+')">👁 Ver</button><button class="btn bpdf bsm" onclick="dlPDF('+i+')">\u2b07 PDF</button></div></div>').join('');
 }
 
 function viewRep(idx){
@@ -537,7 +537,7 @@ async function dlPDF(idx){
   doc.text('Informe generado autom\xe1ticamente por SafeCheck el '+new Date().toLocaleString('es-ES'),M+3,y+9);
   doc.text('Documento con validez como registro de inspecci\xf3n de seguridad laboral (PRL).',M+3,y+15);
   doc.save('SafeCheck_'+r.loc.replace(/\\s+/g,'-')+'_'+r.date.replace(/\\//g,'-')+'.pdf');
-  toast('\U0001f4e5','PDF descargado');
+  toast('📥','PDF descargado');
 }
 
 // ── INSPECCIÓN ────────────────────────────────────────
@@ -610,24 +610,24 @@ function fallback(s){
 function renderAI(s,p){
   const box=document.getElementById('ai'+s);
   if(s==='11'){
-    box.innerHTML='<div class="ailbl">\U0001f916 Plan PRL analizado</div>'+(p?'<div class="aif"><span class="aifl">Empresa</span><span class="aifv">'+(p.empresa||'\u2014')+'</span></div><div class="aif"><span class="aifl">Ubicaci\xf3n</span><span class="aifv">'+(p.ubicacion||'\u2014')+'</span></div>'+(p.fecha_doc?'<div class="aif"><span class="aifl">Fecha documento</span><span class="aifv">'+p.fecha_doc+'</span></div>':'')+(p.observaciones?'<div class="aif"><span class="aifl">Observaciones</span><span class="aifv">'+p.observaciones+'</span></div>':''):'<p style="color:var(--mut);font-size:13px">No se detect\xf3 texto autom\xe1ticamente. Rellena los campos.</p>');
+    box.innerHTML='<div class="ailbl">🤖 Plan PRL analizado</div>'+(p?'<div class="aif"><span class="aifl">Empresa</span><span class="aifv">'+(p.empresa||'\u2014')+'</span></div><div class="aif"><span class="aifl">Ubicaci\xf3n</span><span class="aifv">'+(p.ubicacion||'\u2014')+'</span></div>'+(p.fecha_doc?'<div class="aif"><span class="aifl">Fecha documento</span><span class="aifv">'+p.fecha_doc+'</span></div>':'')+(p.observaciones?'<div class="aif"><span class="aifl">Observaciones</span><span class="aifv">'+p.observaciones+'</span></div>':''):'<p style="color:var(--mut);font-size:13px">No se detect\xf3 texto autom\xe1ticamente. Rellena los campos.</p>');
     if(p){document.getElementById('n11').value=p.empresa||'';document.getElementById('l11').value=p.ubicacion||'';document.getElementById('o11').value=[p.fecha_doc,p.revision,p.observaciones].filter(Boolean).join(' \xb7 ');}
     document.getElementById('cf11').style.display='block';
   }
   else if(s==='12'){
-    box.innerHTML='<div class="ailbl">\U0001f916 Libro Subcontrataci\xf3n analizado</div>'+(p?''+(p.empresas?.length?'<div class="aif"><span class="aifl">Empresas ('+p.empresas.length+')</span><span class="aifv">'+p.empresas.join(' \xb7 ')+'</span></div>':'')+(p.cifs?.length?'<div class="aif"><span class="aifl">CIFs</span><span class="aifv">'+p.cifs.join(' \xb7 ')+'</span></div>':'')+(p.observaciones?'<div class="aif"><span class="aifl">Observaciones</span><span class="aifv">'+p.observaciones+'</span></div>':''):'<p style="color:var(--mut);font-size:13px">Verifica el documento manualmente.</p>');
+    box.innerHTML='<div class="ailbl">🤖 Libro Subcontrataci\xf3n analizado</div>'+(p?''+(p.empresas?.length?'<div class="aif"><span class="aifl">Empresas ('+p.empresas.length+')</span><span class="aifv">'+p.empresas.join(' \xb7 ')+'</span></div>':'')+(p.cifs?.length?'<div class="aif"><span class="aifl">CIFs</span><span class="aifv">'+p.cifs.join(' \xb7 ')+'</span></div>':'')+(p.observaciones?'<div class="aif"><span class="aifl">Observaciones</span><span class="aifv">'+p.observaciones+'</span></div>':''):'<p style="color:var(--mut);font-size:13px">Verifica el documento manualmente.</p>');
     if(p){document.getElementById('e12').value=(p.empresas||[]).join('\n');document.getElementById('o12').value=[(p.cifs||[]).join(', '),(p.fechas||[]).join(', '),p.observaciones].filter(Boolean).join(' | ');}
     document.getElementById('cf12').style.display='block';
   }
   else if(s==='21'){
-    box.innerHTML='<div class="ailbl">\U0001f916 Contenido botiqu\xedn analizado</div>'+(p?''+(p.elementos_visibles?.length?'<div class="aif"><span class="aifl">\u2705 Detectados</span><span class="aifv">'+p.elementos_visibles.join(', ')+'</span></div>':'')+(p.elementos_faltantes?.length?'<div class="aif"><span class="aifl">\u26a0\ufe0f No visibles</span><span class="aifv" style="color:var(--warn)">'+p.elementos_faltantes.join(', ')+'</span></div>':'')+(p.estado_general?'<div class="aif"><span class="aifl">Estado</span><span class="aifv">'+p.estado_general+'</span></div>':'')+(p.observaciones?'<div class="aif"><span class="aifl">Observaciones</span><span class="aifv">'+p.observaciones+'</span></div>':''):'<p style="color:var(--mut);font-size:13px">Completa el checklist manualmente.</p>');
+    box.innerHTML='<div class="ailbl">🤖 Contenido botiqu\xedn analizado</div>'+(p?''+(p.elementos_visibles?.length?'<div class="aif"><span class="aifl">\u2705 Detectados</span><span class="aifv">'+p.elementos_visibles.join(', ')+'</span></div>':'')+(p.elementos_faltantes?.length?'<div class="aif"><span class="aifl">\u26a0\ufe0f No visibles</span><span class="aifv" style="color:var(--warn)">'+p.elementos_faltantes.join(', ')+'</span></div>':'')+(p.estado_general?'<div class="aif"><span class="aifl">Estado</span><span class="aifv">'+p.estado_general+'</span></div>':'')+(p.observaciones?'<div class="aif"><span class="aifl">Observaciones</span><span class="aifv">'+p.observaciones+'</span></div>':''):'<p style="color:var(--mut);font-size:13px">Completa el checklist manualmente.</p>');
     CID.aiObs21=p?.observaciones||'';
     if(p?.elementos_visibles){const m={tijeras:'tijeras',vendas:'vendas',tiritas:'tiritas','ap\xf3sitos':'tiritas',gasas:'gasas','agua oxigenada':'agua_ox'};p.elementos_visibles.forEach(el=>{const k=m[el.toLowerCase().trim()];if(k){const it=document.querySelector('.cki[onclick*="\\\''+k+'\\\'"]');if(it&&!it.classList.contains('on'))it.click();}});}
     if(PHOTOS['21'].length>0)document.getElementById('cl21').style.display='block';
   }
   else if(s==='22'){
     const di=document.getElementById('dt22'),ctx=document.getElementById('dtctx');
-    box.innerHTML='<div class="ailbl">\U0001f916 Fecha de caducidad detectada</div>'+(p?.fecha_detectada&&p.fecha_detectada!=='null'?'<div class="aif"><span class="aifl">Texto en imagen</span><span class="aifv">'+(p.texto_original||'\u2014')+'</span></div><div class="aif"><span class="aifl">Fecha interpretada</span><span class="aifv">'+p.fecha_detectada+'</span></div><div class="aif"><span class="aifl">Confianza</span><span class="aifv">'+(p.confianza||'\u2014')+'</span></div>':'<p style="color:var(--mut);font-size:13px">Fecha no detectada. Intr\xf3ducela manualmente.</p>');
+    box.innerHTML='<div class="ailbl">🤖 Fecha de caducidad detectada</div>'+(p?.fecha_detectada&&p.fecha_detectada!=='null'?'<div class="aif"><span class="aifl">Texto en imagen</span><span class="aifv">'+(p.texto_original||'\u2014')+'</span></div><div class="aif"><span class="aifl">Fecha interpretada</span><span class="aifv">'+p.fecha_detectada+'</span></div><div class="aif"><span class="aifl">Confianza</span><span class="aifv">'+(p.confianza||'\u2014')+'</span></div>':'<p style="color:var(--mut);font-size:13px">Fecha no detectada. Intr\xf3ducela manualmente.</p>');
     if(p?.fecha_detectada&&p.fecha_detectada!=='null'){di.value=p.fecha_detectada;ctx.textContent='Texto le\xeddo: "'+p.texto_original+'" \u2192 Confianza: '+(p.confianza||'\u2014');}
     document.getElementById('cf22').style.display='block';
   }
@@ -650,7 +650,7 @@ function chkExp(){
   CID.s22={f:dt.toLocaleDateString('es-ES'),ph:PHOTOS['22'][0]?.data||null};
   const res=document.getElementById('expr');
   if(dt<hoy){
-    res.innerHTML='<div class="dalert"><h4>\U0001f6a8 BOTIQU\xcdN CADUCADO \u2014 PARALICE LOS TRABAJOS</h4><p>La fecha (<b>'+dt.toLocaleDateString('es-ES')+'</b>) es anterior a hoy. Debe <b>paralizar los trabajos</b> y reponer el botiqu\xedn antes de continuar.</p></div>';
+    res.innerHTML='<div class="dalert"><h4>🚨 BOTIQU\xcdN CADUCADO \u2014 PARALICE LOS TRABAJOS</h4><p>La fecha (<b>'+dt.toLocaleDateString('es-ES')+'</b>) es anterior a hoy. Debe <b>paralizar los trabajos</b> y reponer el botiqu\xedn antes de continuar.</p></div>';
     SDONE['22_alert']=true;
   }else res.innerHTML='<div class="dok"><h4>\u2705 Botiqu\xedn en vigor hasta el '+dt.toLocaleDateString('es-ES')+'</h4></div>';
   SDONE['22']=true;document.getElementById('d22').style.display='block';updProg();
@@ -670,7 +670,7 @@ function saveInsp(){
   cModal('mfin');
   const n=['11','12','21','22'].filter(s=>SDONE[s]).length;
   INSP.unshift({loc:PI?.loc||'Sin nombre',date:new Date().toLocaleDateString('es-ES'),insp:U.name,alert:!!SDONE['22_alert'],nSec:n,s11:CID.s11||null,s12:CID.s12||null,s21:CID.s21||null,s22:CID.s22||null});
-  PI=null;toast('\U0001f3c1','Inspecci\xf3n guardada. El administrador puede verla.');goTab('dash');
+  PI=null;toast('🏁','Inspecci\xf3n guardada. El administrador puede verla.');goTab('dash');
 }
 
 // ── TOAST ─────────────────────────────────────────────
